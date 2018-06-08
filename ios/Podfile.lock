@@ -4,11 +4,6 @@ PODS:
   - GoogleMaps/Base (2.1.1)
   - GoogleMaps/Maps (2.1.1):
     - GoogleMaps/Base
-  - GooglePlacePicker (2.1.1):
-    - GoogleMaps (= 2.1.1)
-    - GooglePlaces (= 2.1.1)
-  - GooglePlaces (2.1.1):
-    - GoogleMaps/Base (= 2.1.1)
   - React (0.55.4):
     - React/Core (= 0.55.4)
   - react-native-google-maps (0.17.0):
@@ -53,8 +48,6 @@ PODS:
 
 DEPENDENCIES:
   - GoogleMaps
-  - GooglePlacePicker
-  - GooglePlaces
   - react-native-google-maps (from `../node_modules/react-native-maps/`)
   - react-native-maps (from `../node_modules/react-native-maps/`)
   - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
@@ -75,8 +68,6 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - GoogleMaps
-    - GooglePlacePicker
-    - GooglePlaces
 
 EXTERNAL SOURCES:
   React:
@@ -92,14 +83,12 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   GoogleMaps: a5b5bbe47734e2443bde781a6aa64e69fdb6d785
-  GooglePlacePicker: 665f39f931f2df32f9dd3fcc45f7e8abf71e535c
-  GooglePlaces: 35636d86e5020cba3856eb988c09a5491de0a65a
   React: aa2040dbb6f317b95314968021bd2888816e03d5
   react-native-google-maps: 7a280302cdf0bcddc7efa6ec55423b17dcbeb1fe
   react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
   react-native-sqlite-storage: 848fb96c0b6d17b3f70e169ac41f84434cdad94c
   yoga: a23273df0088bf7f2bb7e5d7b00044ea57a2a54a
 
-PODFILE CHECKSUM: 8fd059de371307c9563d9156539d8ac59dab362c
+PODFILE CHECKSUM: 52038917a4cc68d8312ac70fca065a240af55f10
 
 COCOAPODS: 1.5.3

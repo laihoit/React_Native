@@ -15,8 +15,8 @@ export default class MyMap extends Component {
         ];
         this.state = {
             region: {
-                latitude: null,
-                longitude: null,
+                latitude: 10.852332,
+                longitude: 106.6348151,
                 latitudeDelta: 0.01,
                 longitudeDelta: 0.01,
             },
@@ -76,37 +76,34 @@ export default class MyMap extends Component {
         const { markers } = this.state;
         let renderMarkers =[];
         for(marker of markers){
-            renderMarkers.push(
-                <Marker
-                key = { marker.latitude }
-                coordinate = { marker}
-                ></Marker>
-            )
+            if(marker.longitude && marker.latitude) {
+                renderMarkers.push(
+                    <Marker
+                    key = { marker.latitude }
+                    coordinate = { marker}
+                    ></Marker>
+                )
+            }
         }
 
         return renderMarkers;
     }
     render() {
-        const { map}  = styles;
-        if (this.state.marker.latitude && this.state.marker.longitude) {
+        
             return (
                 <MapView
                     initialRegion={this.state.region}
-                    style={map}
+                    style={styles.map}
                     onPress={this.onShowMarker.bind(this)}
                 >
-                <Marker
-                coordinate={this.state.marker}
-              >
-                </Marker>
+                {(this.state.marker.latitude && this.state.marker.longitude) &&
+                    <Marker
+                    coordinate={this.state.marker}
+                    />
+                }
                 {this.renderMarker()}
-              
                 </MapView>
             )
-        } else {
-            return ( <View/> )
-        }
-        
     }
 }
 const styles = StyleSheet.create({
