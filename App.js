@@ -6,7 +6,7 @@ import DB from './src/Components/database/DB';
 
 registerScreens();
 
-//DB.loadAndQueryDB();
+DB.loadAndQueryDB();
 
 Navigation.startSingleScreenApp({
   screen:{

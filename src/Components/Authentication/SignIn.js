@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, TextInput, Dimensions, TouchableOpacity, ToastAndroid } from 'react-native';
+import { View, Text, Image, StyleSheet, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import DB from '../database/DB';
 
 import backgr from "../../picture/sky.jpg";
 import logo from "../../picture/logo.png";
@@ -23,9 +24,25 @@ class SignIn extends Component {
         })
     }
     onSubmit(){
-        this.props.navigator.push({
-            screen: 'Home'
-        })
+        DB.db().transaction((tx) => {
+            var sql = 'SELECT * FROM User WHERE name=\'' + this.state.name + '\'';
+            tx.executeSql(sql, [], (tx, results) => {
+                var len = results.rows.length;
+                if(len == 0)
+                    Alert.alert('Tài khoản không tồn tại');
+                 else{
+                    var row = results.rows.item(0);
+                    if(this.state.pass == row.pass){
+                        this.props.navigator.push({
+                            screen: 'Home'
+                        })
+                    Alert.alert('Đăng nhập thành công');
+                    }else
+                    Alert.alert('Sai tài khoản hoặc mật khẩu');
+                }
+              });
+          });
+      
     }
     render() {
         const { container, SectionStyle, texttitle, textBack, textlogin,
@@ -152,7 +169,7 @@ const styles = StyleSheet.create({
     },
     orther:{
         flexDirection: 'row',
-        marginTop: 150
+        marginTop: 120,
     }
 });
 export default SignIn;

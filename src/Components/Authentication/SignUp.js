@@ -4,6 +4,7 @@ import { View, Text, Image, StyleSheet, TextInput, Dimensions, TouchableOpacity,
 import backgr from "../../picture/sky.jpg";
 import logo from "../../picture/logo.png";
 
+import DB from '../database/DB';
 
 const { width, height } = Dimensions.get('window');
 class SignUp extends Component {
@@ -24,8 +25,24 @@ class SignUp extends Component {
             animated: true
         });
     }
-    
 
+    onSaveData(){
+        const { nameup, passup } = this.state;
+        DB.db().transaction((tx) => {
+            tx.executeSql('INSERT INTO User (User_id, name, pass) Values(null,?,?)', [nameup,passup], () => {
+                this.props.navigator.push({
+                    screen :'SignIn',
+                    navigatorStyle:{
+                        navBarHidden: true
+                    }
+
+                })
+            })
+        });
+        
+    }      
+
+       
     render() {
         const { container, texttitle, textBack, textlogin, textapp, inputstyle, btnSignIn, logo1 } = styles;
         return (
@@ -57,6 +74,7 @@ class SignUp extends Component {
                         placeholderTextColor="#fff"
                     />
                     <TouchableOpacity style={btnSignIn}
+                    onPress={() => this.onSaveData()}
                     >
                         <Text style={{ textAlign: 'center', color: '#fff' }} >ĐĂNG KÝ</Text>
                     </TouchableOpacity>

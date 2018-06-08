@@ -15,20 +15,10 @@ class DB extends Component{
         super(props);
 
     }
+    
 
-    // componentWillUnmount = () => {
-    //     this.closeDatabase();
-    //   }
-    //   closeDatabase = () => {
-    //     if (db) {
-    //       console.log("Closing database ...");
-    //       db.close(this.closeCB,this.errorCB);
-    //     } else {
-    //         console.log("Database was not OPENED");
-    //     }
-    //   }
-    
-    
+
+
       errorCB = (err) => {
         console.log("error: ",err);
         return false;
@@ -51,12 +41,16 @@ class DB extends Component{
         + 'User_id INTEGER PRIMARY KEY NOT NULL, '
         + 'name VARCHAR(20), '
         + 'pass TEXT ) ; ', [], this.successCB, this.errorCB);
-      }
 
+      }
+      db(){
+        return db;
+      }
+    
       loadAndQueryDB(){
         console.log("Opening database ...",true);
         db = SQLite.openDatabase(database_name, database_version, database_displayname, database_size, this.openCB, this.errorCB);
-        this.populateDatabase(db);
+        this.populateDB(db);
       }
 
 }
