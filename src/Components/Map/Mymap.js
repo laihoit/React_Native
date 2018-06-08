@@ -1,46 +1,120 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
-import MapView from 'react-native-maps';
+import { StyleSheet, View } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 
-export default class MyMap extends Component{
-    constructor(props){
+import person from '../../picture/person.png';
+
+export default class MyMap extends Component {
+    constructor(props) {
         super(props);
-
+        arraysMarker=[
+            {
+                latitude: 10.852332,
+                longitude: 106.6348151
+            }
+        ];
+        this.state = {
+            region: {
+                latitude: null,
+                longitude: null,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
+            },
+            marker: {
+                latitude: null,
+                longitude: null
+            },
+            markers: arraysMarker
+        };
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
 
     static navigatorButtons = {
         leftButtons: [
             {
-            icon: require('../../picture/back.png'),
-            id: 'back',
-            fontSize:10,
+                icon: require('../../picture/back.png'),
+                id: 'back',
+                fontSize: 10,
             }
         ]
     };
-    onNavigatorEvent(e){
-        if(e.id == 'back'){
+    onNavigatorEvent(e) {
+        if (e.id == 'back') {
             this.props.navigator.dismissModal();
         }
-      }
+    }
+    componentDidMount() {
+        navigator.geolocation.getCurrentPosition((position) => {
+            console.log(position)
+            this.setState({
+                region: {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    latitudeDelta: 0.01,
+                    longitudeDelta: 0.01,
+                },
+                marker: {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                },
+            })
+        }, (error) => console.log(error),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 })
+    }
+    onShowMarker(data){
+        const { markers } = this.state;
+        let latitude = data.nativeEvent.coordinate.latitude;
+        let longitude = data.nativeEvent.coordinate.longitude;
+        arraysMarker.push({
+            latitude : latitude,
+            longitude : longitude
+        });
+        this.setState({markers : arraysMarker});
+        console.log(markers);
+    }
+    renderMarker(){
+        const { markers } = this.state;
+        let renderMarkers =[];
+        for(marker of markers){
+            renderMarkers.push(
+                <Marker
+                key = { marker.latitude }
+                coordinate = { marker}
+                ></Marker>
+            )
+        }
 
-    render(){
-        return(
-            <MapView
-            style={styles.container}
-            initialRegion={{
-                latitude: 10.856094,
-                longitude: 106.631084,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
-            }}
-            />
-        )
+        return renderMarkers;
+    }
+    render() {
+        const { map}  = styles;
+        if (this.state.marker.latitude && this.state.marker.longitude) {
+            return (
+                <MapView
+                    initialRegion={this.state.region}
+                    style={map}
+                    onPress={this.onShowMarker.bind(this)}
+                >
+                <Marker
+                coordinate={this.state.marker}
+              >
+                </Marker>
+                {this.renderMarker()}
+              
+                </MapView>
+            )
+        } else {
+            return ( <View/> )
+        }
+        
     }
 }
 const styles = StyleSheet.create({
-    container:{
-        height: '100%',
-        width: '100%',
+    map: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0
     }
 })

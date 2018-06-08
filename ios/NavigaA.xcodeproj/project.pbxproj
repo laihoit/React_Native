@@ -36,7 +36,9 @@
 		2DCD954D1E0B4F2C00145EB5 /* NavigaATests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* NavigaATests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
+		82B0F77CC3DF430FBB8E66B8 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BE5943A3F10E4F518338B0D3 /* libsqlite3.0.tbd */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
+		8C62C79D20CAAC68007A37C8 /* libSQLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C62C79C20CAAC37007A37C8 /* libSQLite.a */; };
 		8CC79FD720CA8D5C00C9E342 /* AirGoogleMaps in Resources */ = {isa = PBXBuildFile; fileRef = 8CC79FD620CA8D5C00C9E342 /* AirGoogleMaps */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B584EB6B20BFABF600C5A7FB /* libReactNativeNavigation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B584EB6A20BFABC500C5A7FB /* libReactNativeNavigation.a */; };
@@ -310,6 +312,13 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
+		8C62C79B20CAAC37007A37C8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C62C77120CAAC37007A37C8 /* SQLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E23D7B471ACEFE2A00C59171;
+			remoteInfo = SQLite;
+		};
 		ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
@@ -355,9 +364,11 @@
 		7D3DA0C9A15348429D45D03D /* libAirMaps.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAirMaps.a; sourceTree = "<group>"; };
 		81AF39E353BDFC4820901ACF /* libPods-NavigaA.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NavigaA.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		8C62C77120CAAC37007A37C8 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = "../node_modules/react-native-sqlite-storage/src/ios/SQLite.xcodeproj"; sourceTree = "<group>"; };
 		8CC79FD620CA8D5C00C9E342 /* AirGoogleMaps */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AirGoogleMaps; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B584EB4020BFABC500C5A7FB /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
+		BE5943A3F10E4F518338B0D3 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		C77B4F788C7DCA89B6354C42 /* Pods-NavigaA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NavigaA.release.xcconfig"; path = "Pods/Target Support Files/Pods-NavigaA/Pods-NavigaA.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -374,6 +385,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C62C79D20CAAC68007A37C8 /* libSQLite.a in Frameworks */,
 				B584EB6B20BFABF600C5A7FB /* libReactNativeNavigation.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
@@ -389,6 +401,7 @@
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				E0FCEC4FACCAB898756EA506 /* libPods-NavigaA.a in Frameworks */,
+				82B0F77CC3DF430FBB8E66B8 /* libsqlite3.0.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -539,6 +552,7 @@
 			children = (
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 				81AF39E353BDFC4820901ACF /* libPods-NavigaA.a */,
+				BE5943A3F10E4F518338B0D3 /* libsqlite3.0.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -564,6 +578,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				8C62C77120CAAC37007A37C8 /* SQLite.xcodeproj */,
 				B584EB4020BFABC500C5A7FB /* ReactNativeNavigation.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
@@ -614,6 +629,14 @@
 				00E356EE1AD99517003FC87E /* NavigaATests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* NavigaA-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* NavigaA-tvOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8C62C77220CAAC37007A37C8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8C62C79C20CAAC37007A37C8 /* libSQLite.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -816,6 +839,10 @@
 				{
 					ProductGroup = B584EB4120BFABC500C5A7FB /* Products */;
 					ProjectRef = B584EB4020BFABC500C5A7FB /* ReactNativeNavigation.xcodeproj */;
+				},
+				{
+					ProductGroup = 8C62C77220CAAC37007A37C8 /* Products */;
+					ProjectRef = 8C62C77120CAAC37007A37C8 /* SQLite.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1081,6 +1108,13 @@
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		8C62C79C20CAAC37007A37C8 /* libSQLite.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSQLite.a;
+			remoteRef = 8C62C79B20CAAC37007A37C8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1187,10 +1221,14 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-NavigaA/Pods-NavigaA-resources.sh",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GooglePlacePicker/Frameworks/GooglePlacePicker.framework/Versions/A/Resources/GooglePlacePicker.bundle",
+				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Versions/A/Resources/GooglePlaces.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlacePicker.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlaces.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

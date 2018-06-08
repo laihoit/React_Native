@@ -23,6 +23,10 @@ target 'NavigaA' do
     pod 'GoogleMaps'  # <~~ remove this line if you do not want to support GoogleMaps on iOS
     pod 'react-native-maps', path: '../node_modules/react-native-maps/'
     pod 'react-native-google-maps', path: '../node_modules/react-native-maps/'  # <~~ if you need GoogleMaps support on iOS
+    pod 'react-native-sqlite-storage', :path => '../node_modules/react-native-sqlite-storage'
+    pod 'GooglePlaces'
+    pod 'GooglePlacePicker'
+
 end
 post_install do |installer|
     installer.pods_project.targets.each do |target|
