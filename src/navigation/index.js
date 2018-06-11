@@ -5,6 +5,8 @@ import Drawer from '../Components/drawer/Drawer';
 import SignIn from '../Components/Authentication/SignIn';
 import SignUp from '../Components/Authentication/SignUp';
 import MyMap from '../Components/Map/Mymap';
+import User from '../Components/User';
+import DetailUser from '../Components/DetailUser';
 
 export function registerScreens(){
     Navigation.registerComponent('Home', () => Home);
@@ -13,4 +15,6 @@ export function registerScreens(){
     Navigation.registerComponent('SignUp', ()=> SignUp);
     Navigation.registerComponent('Drawer', () => Drawer);
     Navigation.registerComponent('MyMap', ()=> MyMap);
+    Navigation.registerComponent('User', ()=> User);
+    Navigation.registerComponent('DetailUser', ()=> DetailUser)
 }

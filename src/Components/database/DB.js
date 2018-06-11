@@ -15,9 +15,6 @@ class DB extends Component{
         super(props);
 
     }
-    
-
-
 
       errorCB = (err) => {
         console.log("error: ",err);
@@ -37,11 +34,13 @@ class DB extends Component{
       }
 
       populateDB =(tx) => {
-        tx.executeSql('CREATE TABLE IF NOT EXISTS User( '
-        + 'User_id INTEGER PRIMARY KEY NOT NULL, '
+        tx.executeSql('CREATE TABLE IF NOT EXISTS Person( '
+        + 'Person_id INTEGER PRIMARY KEY NOT NULL, '
         + 'name VARCHAR(20), '
-        + 'pass TEXT ) ; ', [], this.successCB, this.errorCB);
-
+        + 'pass TEXT, '
+        + 'locationlan TEXT, '
+        + 'locationlong TEXT ) ; ', [], this.successCB, this.errorCB);
+  
       }
       db(){
         return db;

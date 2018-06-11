@@ -22,9 +22,15 @@ class Drawer extends Component {
             title: 'MyMap',
           });
       };
+      onShowUser = () => {
+        this.props.navigator.showModal({
+            screen: 'User',
+            title: 'User',
+          });
+      };
 
   render() {
-      const { container, button, Viewhr } = styles;
+      const { container, button, Viewhr, imageStyle } = styles;
     return (
       <View style={container}>
       <View>
@@ -57,6 +63,15 @@ class Drawer extends Component {
             onPress={this.onShowMymap}
             title="Mymap"/>
         </View>
+        <View style={button}>
+        <Image 
+        style={imageStyle}
+          source={ require('../../picture/person.png')}
+        />
+          <Button
+            onPress={this.onShowUser}
+            title="User"/>
+        </View>
       </View>
     );
   }
@@ -77,6 +92,10 @@ const styles = StyleSheet.create({
       marginLeft: 10,
       marginRight: 10,
       marginBottom: 20
+  },
+  imageStyle: {
+    width: 30,
+    height: 30
   }
 });
 

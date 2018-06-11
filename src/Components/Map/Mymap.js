@@ -89,8 +89,8 @@ export default class MyMap extends Component {
         return renderMarkers;
     }
     render() {
-        
-            return (
+            if(this.props.locationlan == null || this.props.locationlong == null){
+                return(
                 <MapView
                     initialRegion={this.state.region}
                     style={styles.map}
@@ -103,7 +103,27 @@ export default class MyMap extends Component {
                 }
                 {this.renderMarker()}
                 </MapView>
-            )
+                )}else {
+                return(
+                <MapView
+                    initialRegion={this.state.region}
+                    style={styles.map}
+                    onPress={this.onShowMarker.bind(this)}
+                >
+                 <Marker
+                coordinate = {{
+                    latitude: parseInt(this.props.locationlan),
+                    longitude: parseInt(this.props.locationlong)
+                }}
+                />
+                {(this.state.marker.latitude && this.state.marker.longitude) &&
+                    <Marker
+                    coordinate={this.state.marker}
+                    />
+                }
+                {this.renderMarker()}
+                </MapView>
+                )}
     }
 }
 const styles = StyleSheet.create({

@@ -25,7 +25,7 @@ class SignIn extends Component {
     }
     onSubmit(){
         DB.db().transaction((tx) => {
-            var sql = 'SELECT * FROM User WHERE name=\'' + this.state.name + '\'';
+            var sql = 'SELECT * FROM Person WHERE name=\'' + this.state.name + '\'';
             tx.executeSql(sql, [], (tx, results) => {
                 var len = results.rows.length;
                 if(len == 0)

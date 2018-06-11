@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, TextInput, Dimensions, TouchableOpacity, Alert, ToastAndroid } from 'react-native';
+import { View, Text, Image, StyleSheet, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
 
 import backgr from "../../picture/sky.jpg";
 import logo from "../../picture/logo.png";
@@ -12,13 +12,25 @@ class SignUp extends Component {
         super(props)
         this.state = {
             nameup: '',
-            passup: ''
+            passup: '',
+            latitude: '',
+            longitude: ''
         }
     }
     static navigatorStyle = {
         navBarHidden: true
     }
 
+    componentDidMount() {
+        navigator.geolocation.getCurrentPosition((position) => {
+            this.setState({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+            })
+
+        }, (error) => console.log(error),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 })
+    }
  
     onBack(){
         this.props.navigator.pop({
@@ -26,25 +38,28 @@ class SignUp extends Component {
         });
     }
 
-    onSaveData(){
-        const { nameup, passup } = this.state;
+
+
+    onSignUp(){
+        const { nameup, passup, latitude ,longitude} = this.state;
         DB.db().transaction((tx) => {
-            tx.executeSql('INSERT INTO User (User_id, name, pass) Values(null,?,?)', [nameup,passup], () => {
+            tx.executeSql('INSERT INTO Person( Person_id, name, pass, locationlan, locationlong) Values(null,?,?,?,?)', [nameup, passup, latitude, longitude], () => {
                 this.props.navigator.push({
                     screen :'SignIn',
                     navigatorStyle:{
                         navBarHidden: true
                     }
-
                 })
-            })
-        });
-        
-    }      
 
-       
+            })
+
+        });
+
+    }
+
+
     render() {
-        const { container, texttitle, textBack, textlogin, textapp, inputstyle, btnSignIn, logo1 } = styles;
+        const { container, texttitle, textBack, textlogin, inputstyle, btnSignIn, logo1, btnlocation } = styles;
         return (
             <View>
                 <Image source={backgr} style={container} />
@@ -73,9 +88,14 @@ class SignUp extends Component {
                         underlineColorAndroid="transparent"
                         placeholderTextColor="#fff"
                     />
-                    <TouchableOpacity style={btnSignIn}
-                    onPress={() => this.onSaveData()}
-                    >
+                    <TextInput style={inputstyle}
+                        value= { this.state.latitude + "," + this.state.longitude }
+                        underlineColorAndroid="transparent"
+                        placeholderTextColor="#fff"
+                        editable={false}
+                    />
+                    
+                    <TouchableOpacity style={btnSignIn} onPress={ () => this.onSignUp() }>
                         <Text style={{ textAlign: 'center', color: '#fff' }} >ĐĂNG KÝ</Text>
                     </TouchableOpacity>
                 </View>
@@ -118,7 +138,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         marginLeft: 25,
         backgroundColor: 'rgba(216, 216, 216, 0.5)',
-        marginBottom: 20,
+        marginTop: 20,
         height: 50
     },
     btnSignIn: {
@@ -131,6 +151,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 30
     },
+    btnlocation:{
+        width: width/5,
+        height: height / 27,
+        marginLeft: 25,
+        backgroundColor: '#0174DF',
+        borderRadius: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 5
+    }
     
 });
 export default SignUp;

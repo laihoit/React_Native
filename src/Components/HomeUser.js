@@ -15,24 +15,18 @@ class HomeUser extends Component {
 
     static navigatorButtons = {
         leftButtons: [
-          {
-            icon: require('../picture/menul.png'),
-            id: 'drawer',
-            fontSize:10
-          }
-        ],
-        
-      };
-      onNavigatorEvent(event){
-          switch(event.id){
-              case 'drawer':
-              this.props.navigator.toggleDrawer({
-                side: 'left',
-                animated: true
-              });
-          }
+            {
+                icon: require('../picture/back.png'),
+                id: 'back',
+                fontSize: 10,
+            }
+        ]
+    };
+    onNavigatorEvent(e) {
+        if (e.id == 'back') {
+            this.props.navigator.dismissModal();
         }
-
+    }
         
     _keyExtractor = (item, index) => index.toString();
 
