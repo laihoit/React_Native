@@ -46,17 +46,9 @@ class User extends Component {
                
            
             })
-        }));
-    }
-    onPushMap(){
-        this.props.navigator.push({
-            screen: 'MyMap',
-            passProps:{
-                
-            }
-        })
-    }
+        }))
 
+    }
     _onPress(item){
         this.props.navigator.push({
             screen : 'MyMap',
@@ -66,6 +58,7 @@ class User extends Component {
                 locationlong : item.locationlong
             }
         })
+
     }
     render() {
         const { container, item_header, titleStyle,
@@ -79,9 +72,7 @@ class User extends Component {
                         <View style={item_style} >
                             <View style={item_header} >
                                 <View style={titleStyle} >
-                                   <TouchableOpacity 
-                                   onPress= {this._onPress.bind(this, item)}
-                                   >
+                                   <TouchableOpacity >
                                    <Text>{item.name}</Text>
                                     <Text>{item.pass}</Text>
                                     <Text>{item.locationlan}</Text>
@@ -92,7 +83,7 @@ class User extends Component {
                             <View>
 
                                 <View style={view_Touch} >
-                                    <TouchableOpacity >
+                                    <TouchableOpacity onPress= {this._onPress.bind(this, item)}>
                                         <Text style={text_touch} >Định vị!</Text>
                                     </TouchableOpacity>
                                 </View>

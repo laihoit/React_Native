@@ -28,15 +28,32 @@ class HomeUser extends Component {
         }
     }
         
-    _keyExtractor = (item, index) => index.toString();
+    _keyExtractor = (item, index) => item.login.password;
 
     componentDidMount(){
-        fetch('https://randomuser.me/api?results=10')
+        fetch('https://randomuser.me/api?results=20')
         .then(response => response.json())
         .then(responseJson => {
             this.setState({ data : responseJson.results })
         })
         .catch(err => console.log(err));
+    }
+    onPressItemUser(item){
+        this.props.navigator.push({
+            screen: 'DetailUser',
+            animated: true,
+            passProps: {
+                myimage: item.picture.medium,
+                myname: item.name,
+                myemail : item.email,
+                mylocal : item.location.street,
+                mydate : item.registered,
+                myphone : item.phone,
+                myacount : item.login.username,
+                mystate : item.location.state,
+                mysex : item.gender
+            }
+        })
     }
     render() {
         const { container, item_header, imageStyle, titleStyle,
@@ -67,7 +84,7 @@ class HomeUser extends Component {
                                 />
                             </View>
                             <View style={view_Touch} >
-                                <TouchableOpacity >
+                                <TouchableOpacity  onPress={this.onPressItemUser.bind(this,item)} >
                                     <Text style={text_touch} >Detail!!</Text>
                                 </TouchableOpacity>
                             </View>

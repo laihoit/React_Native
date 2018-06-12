@@ -6,9 +6,12 @@ import SignIn from '../Components/Authentication/SignIn';
 import SignUp from '../Components/Authentication/SignUp';
 import MyMap from '../Components/Map/Mymap';
 import User from '../Components/User';
-import DetailUser from '../Components/DetailUser';
+import Detail from '../Components/Detail';
+import ForgetPass from '../Components/Authentication/ForgetPass';
+import UpdatePass from '../Components/Authentication/UpdatePass';
 
 export function registerScreens(){
+
     Navigation.registerComponent('Home', () => Home);
     Navigation.registerComponent('HomeUser', () => HomeUser);
     Navigation.registerComponent('SignIn', ()=> SignIn);
@@ -16,5 +19,8 @@ export function registerScreens(){
     Navigation.registerComponent('Drawer', () => Drawer);
     Navigation.registerComponent('MyMap', ()=> MyMap);
     Navigation.registerComponent('User', ()=> User);
-    Navigation.registerComponent('DetailUser', ()=> DetailUser)
+    Navigation.registerComponent('DetailUser', ()=> Detail);
+    Navigation.registerComponent('ForgetPass', ()=> ForgetPass);
+    Navigation.registerComponent('UpdatePass', ()=> UpdatePass);
+
 }

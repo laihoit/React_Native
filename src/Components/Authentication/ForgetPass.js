@@ -7,56 +7,45 @@ import logo from "../../picture/logo.png";
 import DB from '../database/DB';
 
 const { width, height } = Dimensions.get('window');
-class SignUp extends Component {
+class ForgetPass extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            nameup: '',
-            passup: '',
-            latitude: '',
-            longitude: ''
+            namecheck: '',
+
         }
     }
     static navigatorStyle = {
         navBarHidden: true
     }
 
-    componentDidMount() {
-        navigator.geolocation.getCurrentPosition((position) => {
-            this.setState({
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude
-            })
-
-        }, (error) => console.log(error),
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 })
-    }
- 
     onBack(){
         this.props.navigator.pop({
             animated: true
         });
     }
-
-
-
-    onSignUp(){
-        const { nameup, passup, latitude ,longitude} = this.state;
-        DB.db().transaction((tx) => {
-            tx.executeSql('INSERT INTO Person( Person_id, name, pass, locationlan, locationlong) Values(null,?,?,?,?)', [nameup, passup, latitude, longitude], () => {
-                this.props.navigator.push({
-                    screen :'SignIn',
-                    navigatorStyle:{
-                        navBarHidden: true
-                    }
-                })
-
-            })
-
-        });
-
+    onUpdatePass(){
+        this.props.navigator.push({
+            screen : 'UpdatePass',
+            passProps: {
+                nameAcount : this.state.namecheck
+            }
+        })
     }
-
+    checkacount(){
+        DB.db().transaction((tx) =>{
+            var sql = 'SELECT * FROM Person WHERE name=\'' + this.state.namecheck + '\'';
+            tx.executeSql(sql,[], (tx , results) => {
+                var len = results.rows.length;
+                if(len == 0){
+                    Alert.alert('Tài khoản không tồn tại');
+                }else{
+                    this.onUpdatePass();
+                    Alert.alert('Tài khoản tồn tại');
+                }
+            })
+        })
+    }
 
     render() {
         const { container, texttitle, textBack, textlogin, inputstyle, btnSignIn, logo1, btnlocation } = styles;
@@ -67,7 +56,7 @@ class SignUp extends Component {
                     <TouchableOpacity onPress={ () => this.onBack() } >
                         <Text style={textBack}>Trở về</Text>
                     </TouchableOpacity>
-                    <Text style={textlogin}>Đăng ký</Text>
+                    <Text style={textlogin}>Xác nhận tài khoản</Text>
                 </View>
                 <View style={logo1}>
                     <Image source={logo} />
@@ -75,28 +64,14 @@ class SignUp extends Component {
                 <View >
                     <TextInput style={inputstyle}
                         placeholder="Nhập tài khoản"
-                        onChangeText={(nameup) => { this.setState({ nameup }) }}
-                        value={this.state.nameup}
+                        onChangeText={(namecheck) => { this.setState({ namecheck }) }}
+                        value={this.state.namecheck}
                         underlineColorAndroid="transparent"
                         placeholderTextColor="#fff"
                     />
-                    <TextInput style={inputstyle}
-                        placeholder="Nhập mật khẩu"
-                        onChangeText={(passup) => { this.setState({ passup }) }}
-                        value={this.state.passup}
-                        secureTextEntry={true}
-                        underlineColorAndroid="transparent"
-                        placeholderTextColor="#fff"
-                    />
-                    <TextInput style={inputstyle}
-                        value= { this.state.latitude + "," + this.state.longitude }
-                        underlineColorAndroid="transparent"
-                        placeholderTextColor="#fff"
-                        editable={false}
-                    />
-                    
-                    <TouchableOpacity style={btnSignIn} onPress={ () => this.onSignUp() }>
-                        <Text style={{ textAlign: 'center', color: '#fff' }} >ĐĂNG KÝ</Text>
+                 
+                    <TouchableOpacity style={btnSignIn} onPress={ () => this.checkacount() }>
+                        <Text style={{ textAlign: 'center', color: '#fff' }} >XÁC NHÂN</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -163,4 +138,4 @@ const styles = StyleSheet.create({
     }
     
 });
-export default SignUp;
+export default ForgetPass;

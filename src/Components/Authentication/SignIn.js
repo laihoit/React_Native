@@ -23,6 +23,12 @@ class SignIn extends Component {
             animated: true
         })
     }
+    onForgetPass(){
+        this.props.navigator.push({
+            screen: 'ForgetPass',
+            animated: true
+        })
+    }
     onSubmit(){
         DB.db().transaction((tx) => {
             var sql = 'SELECT * FROM Person WHERE name=\'' + this.state.name + '\'';
@@ -63,7 +69,7 @@ class SignIn extends Component {
                     <View style={SectionStyle} >
                         <Image source={user} style={ImageStyle} />
                         <TextInput style={inputstyle}
-                            placeholder="Nhập SDT"
+                            placeholder="Nhập tài khoản"
                             onChangeText={(name) => { this.setState({ name }) }}
                             value={this.state.name}
                             underlineColorAndroid="transparent"
@@ -87,7 +93,9 @@ class SignIn extends Component {
                         <Text style={{ textAlign: 'center', color: '#fff' }} >ĐĂNG NHẬP</Text>
                     </TouchableOpacity>
                     <View style={orther} >
-                    <TouchableOpacity >
+                    <TouchableOpacity
+                        onPress={() => this.onForgetPass()}
+                    >
                         <Text style={textfina} >Quên mật khẩu?</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => this.onSignUp()} >
