@@ -42,16 +42,16 @@ class HomeUser extends Component {
         this.props.navigator.push({
             screen: 'DetailUser',
             animated: true,
-            passProps: {
-                myimage: item.picture.medium,
-                myname: item.name,
-                myemail : item.email,
-                mylocal : item.location.street,
-                mydate : item.registered,
-                myphone : item.phone,
+            passProps:{
                 myacount : item.login.username,
-                mystate : item.location.state,
-                mysex : item.gender
+                myimage: item.picture.large,
+                myemail: item.email,
+                mylocal: item.location.street,
+                mydate: item.registered,
+                myphone: item.phone ,
+                myname: item.name.last,
+                mystate: item.location.state,
+                 mysex : item.gender
             }
         })
     }

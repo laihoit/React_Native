@@ -35,9 +35,7 @@ class Detail extends Component{
             this.props.navigator.pop();
         }
     }
-    componentWillMount(){
-        Alert.alert(this.props.myname);
-    }
+  
     
     render(){
         const {container,main,bbar,contactButton,contactText,icon,

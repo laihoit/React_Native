@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Linking } from 'react-native';
-import Header from './Header';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Linking, Alert } from 'react-native';
 
 const { widthDimension, heightDimension } = Dimensions.get('window');
+
 class Home extends Component {
     constructor(props){
         super(props);
+
         this.state = {
             albums: [],
         }; 
@@ -13,6 +14,7 @@ class Home extends Component {
     }
 
     static navigatorButtons = {
+        
         leftButtons: [
           {
             icon: require('../picture/menul.png'),
@@ -20,7 +22,14 @@ class Home extends Component {
             fontSize:10
           }
         ],
-        
+        rightButtons: [
+            {
+                icon: require('../picture/cart1.png'),
+                id : 'person',
+                fontSize: 10,
+                title : 'laiho'
+            }
+        ],
       };
       onNavigatorEvent(event){
           switch(event.id){
@@ -29,6 +38,14 @@ class Home extends Component {
                 side: 'left',
                 animated: true
               });
+              case 'person':
+              this.props.navigator.push({
+                  screen: 'Person',
+                  passProps: {
+                      username : this.props.nameAcount
+                  }
+              })
+              
           }
         }
 

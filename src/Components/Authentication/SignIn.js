@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import DB from '../database/DB';
+import { connect } from 'react-redux';
+import { setLoginState } from '../modules/Login/action';
+import store from '../modules/redux/store';
 
 import backgr from "../../picture/sky.jpg";
 import logo from "../../picture/logo.png";
@@ -10,6 +13,7 @@ import pass from "../../picture/pass.png";
 
 const { width, height } = Dimensions.get('window');
 class SignIn extends Component {
+
     constructor(props) {
         super(props)
         this.state = {
@@ -39,9 +43,15 @@ class SignIn extends Component {
                  else{
                     var row = results.rows.item(0);
                     if(this.state.pass == row.pass){
+                        store.dispatch(setLoginState({ isLoggedIn : true, user : this.state.name }))
                         this.props.navigator.push({
-                            screen: 'Home'
+                            screen: 'Home',
+                            title: 'Albums',
+                            passProps: {
+                                nameAcount : this.state.name
+                            }
                         })
+
                     Alert.alert('Đăng nhập thành công');
                     }else
                     Alert.alert('Sai tài khoản hoặc mật khẩu');
@@ -110,6 +120,7 @@ class SignIn extends Component {
 }
 const widthbg = width;
 const heightbg = (widthbg / 540) * 960;
+
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
@@ -180,4 +191,5 @@ const styles = StyleSheet.create({
         marginTop: 120,
     }
 });
-export default SignIn;
+
+export default connect()(SignIn);
