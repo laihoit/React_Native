@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Linking } from 'react-native';
-import Header from './Header';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Linking ,Alert} from 'react-native';
 
-const { widthDimension, heightDimension } = Dimensions.get('window');
 class HomeUser extends Component {
 
     constructor(props){
@@ -16,7 +14,7 @@ class HomeUser extends Component {
     static navigatorButtons = {
         leftButtons: [
             {
-                icon: require('../picture/back.png'),
+                icon: require('../../picture/back.png'),
                 id: 'back',
                 fontSize: 10,
             }

@@ -1,12 +1,12 @@
 import { Navigation } from 'react-native-navigation';
-import Home from '../Components/Home';
-import HomeUser from '../Components/HomeUser';
+import Home from '../Components/screen/Home';
+import HomeUser from '../Components/screen/HomeUser';
 import Drawer from '../Components/drawer/Drawer';
 import SignIn from '../Components/Authentication/SignIn';
 import SignUp from '../Components/Authentication/SignUp';
 import MyMap from '../Components/Map/Mymap';
-import User from '../Components/User';
-import Detail from '../Components/Detail';
+import User from '../Components/screen/User';
+import Detail from '../Components/screen/Detail';
 import ForgetPass from '../Components/Authentication/ForgetPass';
 import UpdatePass from '../Components/Authentication/UpdatePass';
 import Person from '../Components/Cart/Person';

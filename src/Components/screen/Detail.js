@@ -1,17 +1,15 @@
 import React, {Component} from 'react'
 import {View, Image,Text,StyleSheet,Dimensions, ScrollView,Alert} from 'react-native';
 
-import phone from '../picture/phone.png';
-import sms from '../picture/sms.png';
-import car from '../picture/car.jpg';
-import avatar from '../picture/avatar.png';
-import brand from '../picture/brand.png';
-import km from '../picture/km.png';
-import steering from '../picture/steering.png';
-import calendar from '../picture/calendar.png';
-import kind from '../picture/kind.png';
-import status from '../picture/status.png';
-import color from '../picture/paint.png';
+import phone from '../../picture/phone.png';
+import sms from '../../picture/sms.png';
+import brand from '../../picture/brand.png';
+import km from '../../picture/km.png';
+import steering from '../../picture/steering.png';
+import calendar from '../../picture/calendar.png';
+import kind from '../../picture/kind.png';
+import status from '../../picture/status.png';
+import color from '../../picture/paint.png';
 
 const{width,height} = Dimensions.get('window');
 
@@ -24,7 +22,7 @@ class Detail extends Component{
     static navigatorButtons = {
         leftButtons: [
             {
-                icon: require('../picture/back.png'),
+                icon: require('../../picture/back.png'),
                 id: 'back',
                 fontSize: 10,
             }

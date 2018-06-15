@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, Text, TextInput, Dimensions, TouchableOpacity, Alert, FlatList } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 const { width, height } = Dimensions.get('window');
@@ -26,7 +26,11 @@ export default class MyMap extends Component {
             markers: arraysMarker,
             addressbegin: '',
             addressend: '',
-            directionsMap: []
+            directionsMap: [],
+            addresslocation: '',
+            location: [],
+            findlat :'',
+            findlong : ''
         };
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
@@ -72,7 +76,6 @@ export default class MyMap extends Component {
             longitude: longitude
         });
         this.setState({ markers: arraysMarker });
-        console.log(markers);
     }
     renderMarker() {
         const { markers } = this.state;
@@ -90,56 +93,86 @@ export default class MyMap extends Component {
 
         return renderMarkers;
     }
-    findDirection() {
+    findDirectionbetweentowpoint() {
         const { addressbegin, addressend } = this.state
         fetch('https://maps.googleapis.com/maps/api/directions/json?origin=' + addressbegin + '&destination=' + addressend + '&region=vn&key=AIzaSyDnwLF2-WfK8cVZt9OoDYJ9Y8kspXhEHfI')
             .then(response => response.json)
             .then(responseJson => {
                 this.setState({ directionsMap: responseJson })
-                console.log("sau khi tim kiem "+this.state.directionsMap)  
+                console.log("sau khi tim kiem " + this.state.directionsMap)
             })
             .catch(err => console.log(err));
+    }
+    findlocation() {
+        const { addresslocation, location, findlat, findlong } = this.state;
+        fetch('https://maps.google.com/maps/api/geocode/json?address=' + addresslocation + '\'')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    datasource: responseJson.results,
+                })
+                this.setState({
+                    findlat : this.state.datasource[0].geometry.location.lat,
+                    findlong : this.state.datasource[0].geometry.location.lng
+                })
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+    renderfindlocation(){
+        return(
+        <Marker
+                title='day la '
+                coordinate={{
+                    latitude: this.state.findlat,
+                    longitude: this.state.findlong
+                }}
+            />
+            )
     }
     render() {
         if (this.props.locationlan == null || this.props.locationlong == null) {
             return (
-                <View style={{flex: 1}}>
-                    <View style={ styles.btnSignIn } > 
-                    <View>
-                        <TextInput style={styles.inputstyle}
-                            placeholder="Nhập vi tri bat dau"
-                            onChangeText={(addressbegin) => { this.setState({ addressbegin }) }}
-                            value={this.state.addressbegin}
-                            placeholderTextColor="#fff"
-                        />
-                        <TextInput style={styles.inputstyle}
-                            placeholder="Nhập vi tri bat dau"
-                            onChangeText={(addressend) => { this.setState({ addressend }) }}
-                            value={this.state.addressend}
-                            placeholderTextColor="#fff"
-                        />
-                        
-                    </View>
-                        <TouchableOpacity   style={ styles.textbtn } onPress={() => this.findDirection()}>
-                                <Text >ĐĂNG KÝ</Text>
+                <View style={{ flex: 1 }}>
+                    <View style={styles.btnSignIn} >
+                        <View>
+                            <TextInput style={styles.inputstyle}
+                                placeholder="Nhập vi tri bat dau"
+                                onChangeText={(addresslocation) => { this.setState({ addresslocation }) }}
+                                value={this.state.addresslocation}
+                                placeholderTextColor="#fff"
+                            />
+                            <TextInput style={styles.inputstyle}
+                                placeholder="Nhập vi tri ket thuc"
+                                onChangeText={(addressend) => { this.setState({ addressend }) }}
+                                value={this.state.addressend}
+                                placeholderTextColor="#fff"
+                            />
+
+                        </View>
+                        <TouchableOpacity style={styles.textbtn} onPress={() => this.findlocation()}>
+                            <Text >Tim</Text>
                         </TouchableOpacity>
                     </View>
                     <MapView
-                    initialRegion={this.state.region}
-                    style={styles.map}
-                    onPress={this.onShowMarker.bind(this)}
-                >
-                    {(this.state.marker.latitude && this.state.marker.longitude) &&
-                        <Marker
-                            coordinate={this.state.marker}
-                        />
-                    }
-                    {this.renderMarker()}
-                    
-                </MapView>
+                        initialRegion={this.state.region}
+                        style={styles.map}
+                        onPress={this.onShowMarker.bind(this)}
+                    >
+                        {(this.state.marker.latitude && this.state.marker.longitude) &&
+                            <Marker
+                                coordinate={this.state.marker}
+                            />
+                        }
+                        {this.renderMarker()}
+                         {
+                           this.state.findlat != '' ? this.renderfindlocation() : ''
+                         } 
+                    </MapView>
                 </View>
-                
-                
+
+
             )
         } else {
             return (
@@ -167,7 +200,7 @@ export default class MyMap extends Component {
 }
 const styles = StyleSheet.create({
     map: {
-       flex: 1
+        flex: 1
     },
     inputstyle: {
         width: width - 100,
@@ -181,12 +214,12 @@ const styles = StyleSheet.create({
         position: 'absolute',
         zIndex: 999
     },
-    textbtn:{
+    textbtn: {
         backgroundColor: 'rgba(216, 216, 216, 0.5)',
-        width: width/5,
+        width: width / 5,
         marginTop: 5,
         marginLeft: 5,
-        padding :5
+        padding: 5
     }
 
 })

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Linking, Alert } from 'react-native';
 
-const { widthDimension, heightDimension } = Dimensions.get('window');
 
 class Home extends Component {
     constructor(props){
@@ -17,14 +16,14 @@ class Home extends Component {
         
         leftButtons: [
           {
-            icon: require('../picture/menul.png'),
+            icon: require('../../picture/menul.png'),
             id: 'drawer',
             fontSize:10
           }
         ],
         rightButtons: [
             {
-                icon: require('../picture/cart1.png'),
+                icon: require('../../picture/cart1.png'),
                 id : 'person',
                 fontSize: 10,
                 title : 'laiho'

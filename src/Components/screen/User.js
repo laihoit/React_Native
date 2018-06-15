@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Linking, Alert } from 'react-native';
-import DB from './database/DB';
-import { addPropertyToCollection } from './action';
+import DB from '../database/DB';
 
 class User extends Component {
     constructor(props) {
@@ -19,7 +18,7 @@ class User extends Component {
     static navigatorButtons = {
         leftButtons: [
             {
-                icon: require('../picture/back.png'),
+                icon: require('../../picture/back.png'),
                 id: 'back',
                 fontSize: 10,
             }
