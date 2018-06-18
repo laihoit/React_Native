@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import {View, Image,Text,StyleSheet,Dimensions, ScrollView,Alert} from 'react-native';
+import {View, Image,Text,StyleSheet,Dimensions, ScrollView,Alert, TouchableOpacity, Linking} from 'react-native';
+import Communications from 'react-native-communications';
 
 import phone from '../../picture/phone.png';
 import sms from '../../picture/sms.png';
@@ -33,7 +34,14 @@ class Detail extends Component{
             this.props.navigator.pop();
         }
     }
-  
+    Callphone(){
+        const { myphone } = this.props;
+        Communications.phonecall(myphone, true);
+    }
+    SendMessage(){
+        const { myphone } = this.props;
+        Communications.text('\''+myphone+'\'');
+    }
     
     render(){
         const {container,main,bbar,contactButton,contactText,icon,
@@ -117,14 +125,18 @@ class Detail extends Component{
                 
                 </ScrollView>
                 <View style={bbar}>
-                    <View style={contactButton}>
+                    <TouchableOpacity style={contactButton}
+                    onPress={ () => this.Callphone()}
+                    >
                         <Image source={phone} style={icon}/> 
                         <Text style={contactText}>Gọi điện</Text>
-                    </View>
-                    <View style={contactButton}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={contactButton}
+                    onPress={ () => this.SendMessage() }
+                    >
                         <Image source={sms} style={icon}/> 
                         <Text style={contactText}>Nhắn tin</Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             </View>
         );

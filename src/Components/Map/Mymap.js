@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TextInput, Dimensions, TouchableOpacity, Alert, FlatList } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, Polyline } from 'react-native-maps';
+import MapViewDirections from 'react-native-maps-directions';
 
 const { width, height } = Dimensions.get('window');
+
+
+const GOOGLE_MAPS_APIKEY = 'AIzaSyDnwLF2-WfK8cVZt9OoDYJ9Y8kspXhEHfI';
+
 export default class MyMap extends Component {
     constructor(props) {
         super(props);
@@ -29,8 +34,10 @@ export default class MyMap extends Component {
             directionsMap: [],
             addresslocation: '',
             location: [],
-            findlat: '',
-            findlong: ''
+            findlatstart: '',
+            findlongstart: '',
+            findlatend: '',
+            findlongend: ''
         };
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
@@ -104,45 +111,80 @@ export default class MyMap extends Component {
             .catch(err => console.log(err));
     }
     findlocation() {
-        const { addresslocation, location, findlat, findlong } = this.state;
-        fetch('https://maps.google.com/maps/api/geocode/json?address=' + addresslocation + '\'')
+        const { addressbegin, addressend} = this.state;
+        //get start point
+        fetch('https://maps.google.com/maps/api/geocode/json?address=' + addressbegin + '\'')
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState({
                     datasource: responseJson.results,
                 })
                 this.setState({
-                    findlat: this.state.datasource[0].geometry.location.lat,
-                    findlong: this.state.datasource[0].geometry.location.lng
+                    findlatstart: this.state.datasource[0].geometry.location.lat,
+                    findlongstart: this.state.datasource[0].geometry.location.lng
                 })
-
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+            //get end point
+            fetch('https://maps.google.com/maps/api/geocode/json?address=' + addressend + '\'')
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    datasource: responseJson.results,
+                })
+                this.setState({
+                    findlatend: this.state.datasource[0].geometry.location.lat,
+                    findlongend: this.state.datasource[0].geometry.location.lng
+                })
             })
             .catch((error) => {
                 console.error(error);
             });
     }
     renderfindlocation() {
-
         return (
             <Marker
                 title='day la '
+                description='day la'
                 coordinate={{
-                    latitude: this.state.findlat,
-                    longitude: this.state.findlong
+                    latitude: this.state.findlatstart,
+                    longitude: this.state.findlongstart
+                }}
+            />
+        )
+    }
+    renderlocationend(){
+        return (
+            <Marker
+                title='day la '
+                description='day la'
+                coordinate={{
+                    latitude: this.state.findlatend,
+                    longitude: this.state.findlongend
                 }}
             />
         )
     }
     render() {
         if (this.props.locationlan == null || this.props.locationlong == null) {
+            var markerstart = {
+                latitude : this.state.findlatstart,
+                longitude : this.state.findlongstart
+            }
+            var markerend = {
+                latitude : this.state.findlatend,
+                longitude : this.state.findlongend
+            }
             return (
                 <View style={{ flex: 1 }}>
                     <View style={styles.btnSignIn} >
                         <View>
                             <TextInput style={styles.inputstyle}
                                 placeholder="Nhập vi tri bat dau"
-                                onChangeText={(addresslocation) => { this.setState({ addresslocation }) }}
-                                value={this.state.addresslocation}
+                                onChangeText={(addressbegin) => { this.setState({ addressbegin }) }}
+                                value={this.state.addressbegin}
                                 placeholderTextColor="#fff"
                             />
                             <TextInput style={styles.inputstyle}
@@ -171,8 +213,18 @@ export default class MyMap extends Component {
                         }
                         {this.renderMarker()}
                         {
-                            this.state.findlat != '' ? this.renderfindlocation() : ''
+                            this.state.findlatstart != '' ? this.renderfindlocation() : ''
                         }
+                        {
+                            this.state.findlatend != '' ? this.renderlocationend() : ''
+                        }
+                        <MapViewDirections
+                            origin={markerstart}
+                            destination={markerend}
+                            apikey={GOOGLE_MAPS_APIKEY}
+                            strokeWidth={3}
+                            strokeColor="hotpink"
+                        />
                     </MapView>
                 </View>
 

@@ -26,7 +26,7 @@ class HomeUser extends Component {
         }
     }
         
-    _keyExtractor = (item, index) => item.login.password;
+    _keyExtractor = (item,index) => item.login.password;
 
     componentDidMount(){
         fetch('https://randomuser.me/api?results=20')
@@ -39,17 +39,18 @@ class HomeUser extends Component {
     onPressItemUser(item){
         this.props.navigator.push({
             screen: 'DetailUser',
+            title: 'Detail',
             animated: true,
             passProps:{
                 myacount : item.login.username,
                 myimage: item.picture.large,
                 myemail: item.email,
                 mylocal: item.location.street,
-                mydate: item.registered,
+                mydate: item.registered.date,
                 myphone: item.phone ,
                 myname: item.name.last,
                 mystate: item.location.state,
-                 mysex : item.gender
+                mysex : item.gender
             }
         })
     }
