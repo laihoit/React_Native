@@ -29,8 +29,8 @@ export default class MyMap extends Component {
             directionsMap: [],
             addresslocation: '',
             location: [],
-            findlat :'',
-            findlong : ''
+            findlat: '',
+            findlong: ''
         };
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
@@ -112,24 +112,26 @@ export default class MyMap extends Component {
                     datasource: responseJson.results,
                 })
                 this.setState({
-                    findlat : this.state.datasource[0].geometry.location.lat,
-                    findlong : this.state.datasource[0].geometry.location.lng
+                    findlat: this.state.datasource[0].geometry.location.lat,
+                    findlong: this.state.datasource[0].geometry.location.lng
                 })
+
             })
             .catch((error) => {
                 console.error(error);
             });
     }
-    renderfindlocation(){
-        return(
-        <Marker
+    renderfindlocation() {
+
+        return (
+            <Marker
                 title='day la '
                 coordinate={{
                     latitude: this.state.findlat,
                     longitude: this.state.findlong
                 }}
             />
-            )
+        )
     }
     render() {
         if (this.props.locationlan == null || this.props.locationlong == null) {
@@ -162,13 +164,15 @@ export default class MyMap extends Component {
                     >
                         {(this.state.marker.latitude && this.state.marker.longitude) &&
                             <Marker
+                                title="This is a title"
+                                description="This is a description"
                                 coordinate={this.state.marker}
                             />
                         }
                         {this.renderMarker()}
-                         {
-                           this.state.findlat != '' ? this.renderfindlocation() : ''
-                         } 
+                        {
+                            this.state.findlat != '' ? this.renderfindlocation() : ''
+                        }
                     </MapView>
                 </View>
 
@@ -181,14 +185,16 @@ export default class MyMap extends Component {
                     style={styles.map}
                     onPress={this.onShowMarker.bind(this)}
                 >
-                    <Marker
+                    {/* <Marker
                         coordinate={{
                             latitude: parseInt(this.props.locationlan),
                             longitude: parseInt(this.props.locationlong)
                         }}
-                    />
+                    /> */}
                     {(this.state.marker.latitude && this.state.marker.longitude) &&
                         <Marker
+                            title="This is a title"
+                            description="This is a description"
                             coordinate={this.state.marker}
                         />
                     }

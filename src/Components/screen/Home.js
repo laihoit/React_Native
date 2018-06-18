@@ -26,26 +26,21 @@ class Home extends Component {
                 icon: require('../../picture/cart1.png'),
                 id : 'person',
                 fontSize: 10,
-                title : 'laiho'
             }
         ],
       };
-      onNavigatorEvent(event){
-          switch(event.id){
-              case 'drawer':
-              this.props.navigator.toggleDrawer({
-                side: 'left',
-                animated: true
-              });
-              case 'person':
-              this.props.navigator.push({
-                  screen: 'Person',
-                  passProps: {
-                      username : this.props.nameAcount
-                  }
-              })
-              
-          }
+      onNavigatorEvent(e){
+            if(e.id == 'drawer'){
+                this.props.navigator.toggleDrawer({
+                    side: 'left',
+                    animated: true
+                  });
+            }else if(e.id == 'person'){
+                this.props.navigator.push({
+                    screen: 'Person',
+                });
+            }
+
         }
 
     _keyExtractor = (item, index) => index.toString();

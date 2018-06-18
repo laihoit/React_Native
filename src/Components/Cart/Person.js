@@ -47,7 +47,7 @@ class Person extends Component {
                 navBarHidden: true
             }
         })
-        store.dispatch(resetPersisStore());
+      //  store.dispatch(resetPersisStore());
     }
 
     render() {

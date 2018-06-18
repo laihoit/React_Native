@@ -4,9 +4,8 @@ import {StyleSheet, View, Button, Image} from 'react-native';
 class Drawer extends Component {
 
     onShowHome = () => {
-        this.props.navigator.showModal({
-          screen: 'Home',
-          title: 'Home',
+        this.props.navigator.toggleDrawer({
+          side: 'left'
         });
       };
     
