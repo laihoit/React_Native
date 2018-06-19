@@ -40,7 +40,7 @@ class Detail extends Component{
     }
     SendMessage(){
         const { myphone } = this.props;
-        Communications.text('\''+myphone+'\'');
+        Communications.text(myphone);
     }
     
     render(){

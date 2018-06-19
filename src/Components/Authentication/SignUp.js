@@ -92,7 +92,7 @@ class SignUp extends Component {
                         value= { this.state.latitude + "," + this.state.longitude }
                         underlineColorAndroid="transparent"
                         placeholderTextColor="#fff"
-                        editable={false}
+                    
                     />
                     
                     <TouchableOpacity style={btnSignIn} onPress={ () => this.onSignUp() }>

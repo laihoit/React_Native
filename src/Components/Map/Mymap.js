@@ -7,16 +7,18 @@ const { width, height } = Dimensions.get('window');
 
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyDnwLF2-WfK8cVZt9OoDYJ9Y8kspXhEHfI';
+const DEFAULT_PADDING = { top: 40, right: 40, bottom: 40, left: 40 };
 
 export default class MyMap extends Component {
     constructor(props) {
         super(props);
         arraysMarker = [
             {
-                latitude: 10.852332,
-                longitude: 106.6348151
+                latitude: '',
+                longitude: ''
             }
         ];
+        this.mapRef = null;
         this.state = {
             region: {
                 latitude: 10.852332,
@@ -25,8 +27,8 @@ export default class MyMap extends Component {
                 longitudeDelta: 0.01,
             },
             marker: {
-                latitude: null,
-                longitude: null
+                latitude: '',
+                longitude: ''
             },
             markers: arraysMarker,
             addressbegin: '',
@@ -111,7 +113,7 @@ export default class MyMap extends Component {
             .catch(err => console.log(err));
     }
     findlocation() {
-        const { addressbegin, addressend} = this.state;
+        const { addressbegin, addressend } = this.state;
         //get start point
         fetch('https://maps.google.com/maps/api/geocode/json?address=' + addressbegin + '\'')
             .then((response) => response.json())
@@ -127,8 +129,8 @@ export default class MyMap extends Component {
             .catch((error) => {
                 console.error(error);
             });
-            //get end point
-            fetch('https://maps.google.com/maps/api/geocode/json?address=' + addressend + '\'')
+        //get end point
+        fetch('https://maps.google.com/maps/api/geocode/json?address=' + addressend + '\'')
             .then((response) => response.json())
             .then((responseJson) => {
                 this.setState({
@@ -155,7 +157,7 @@ export default class MyMap extends Component {
             />
         )
     }
-    renderlocationend(){
+    renderlocationend() {
         return (
             <Marker
                 title='day la '
@@ -167,15 +169,33 @@ export default class MyMap extends Component {
             />
         )
     }
+    componentDidUpdate() {
+        const { marker } = this.state;
+        if(this.props.locationlan == null || this.props.locationlong == null){
+        this.map.fitToCoordinates([marker], {
+            edgePadding: DEFAULT_PADDING,
+            animated: true,
+        });
+    }else {
+        const markeruser = {
+            latitude: parseInt(this.props.locationlan),
+            longitude: parseInt(this.props.locationlong)
+        }
+        this.map.fitToCoordinates([markeruser], {
+            edgePadding: DEFAULT_PADDING,
+            animated: true,
+        });
+    }
+    }
     render() {
         if (this.props.locationlan == null || this.props.locationlong == null) {
-            var markerstart = {
-                latitude : this.state.findlatstart,
-                longitude : this.state.findlongstart
+            const markerstart = {
+                latitude: this.state.findlatstart,
+                longitude: this.state.findlongstart
             }
-            var markerend = {
-                latitude : this.state.findlatend,
-                longitude : this.state.findlongend
+            const markerend = {
+                latitude: this.state.findlatend,
+                longitude: this.state.findlongend
             }
             return (
                 <View style={{ flex: 1 }}>
@@ -200,56 +220,60 @@ export default class MyMap extends Component {
                         </TouchableOpacity>
                     </View>
                     <MapView
-                        initialRegion={this.state.region}
+                        //initialRegion={this.state.region}
                         style={styles.map}
                         onPress={this.onShowMarker.bind(this)}
-                    >
-                        {(this.state.marker.latitude && this.state.marker.longitude) &&
-                            <Marker
-                                title="This is a title"
-                                description="This is a description"
-                                coordinate={this.state.marker}
-                            />
-                        }
+                        ref={ref => { this.map = ref; }}>
+                        <Marker
+                            title="Me "
+                            description="That all for me today"
+                            coordinate={this.state.marker}
+                        />
                         {this.renderMarker()}
-                        {
-                            this.state.findlatstart != '' ? this.renderfindlocation() : ''
-                        }
-                        {
-                            this.state.findlatend != '' ? this.renderlocationend() : ''
-                        }
+                        {this.state.findlatstart != '' ? this.renderfindlocation() : ''}
+                        {this.state.findlatend != '' ? this.renderlocationend() : ''}
                         <MapViewDirections
                             origin={markerstart}
                             destination={markerend}
                             apikey={GOOGLE_MAPS_APIKEY}
                             strokeWidth={3}
-                            strokeColor="hotpink"
+                            strokeColor="#2962FF"
                         />
                     </MapView>
                 </View>
-
-
             )
         } else {
+            const markeruser = {
+                latitude: parseInt(this.props.locationlan),
+                longitude: parseInt(this.props.locationlong)
+            }
             return (
                 <MapView
-                    initialRegion={this.state.region}
+                   // initialRegion={this.state.region}
                     style={styles.map}
                     onPress={this.onShowMarker.bind(this)}
+                    ref={ref => { this.map = ref; }}
                 >
-                    {/* <Marker
+                    <Marker
+                            title="Me "
+                            description="That all for me today"
+                            coordinate={this.state.marker}
+                        />
+                    <Marker
+                        title="what "
+                        description="This is a description"
                         coordinate={{
                             latitude: parseInt(this.props.locationlan),
                             longitude: parseInt(this.props.locationlong)
                         }}
-                    /> */}
-                    {(this.state.marker.latitude && this.state.marker.longitude) &&
-                        <Marker
-                            title="This is a title"
-                            description="This is a description"
-                            coordinate={this.state.marker}
+                    />
+                    <MapViewDirections
+                            origin={this.state.marker}
+                            destination={markeruser}
+                            apikey={GOOGLE_MAPS_APIKEY}
+                            strokeWidth={3}
+                            strokeColor="#2962FF"
                         />
-                    }
                     {this.renderMarker()}
                 </MapView>
             )

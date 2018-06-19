@@ -51,6 +51,7 @@ class User extends Component {
     _onPress(item){
         this.props.navigator.push({
             screen : 'MyMap',
+            title: 'Mapuser',
             passProps: {
                 name : item.name,
                 locationlan : item.locationlan,
