@@ -26,7 +26,7 @@ class User extends Component {
     };
     onNavigatorEvent(e) {
         if (e.id == 'back') {
-            this.props.navigator.dismissModal();
+            this.props.navigator.pop();
         }
     }
 

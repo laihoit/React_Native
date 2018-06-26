@@ -5,6 +5,10 @@ import backgr from "../../picture/sky.jpg";
 import logo from "../../picture/logo.png";
 
 import DB from '../database/DB';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as NotificationActions from '../notifications/action';
+import { Container } from '../component';
 
 const { width, height } = Dimensions.get('window');
 class SignUp extends Component {
@@ -36,12 +40,15 @@ class SignUp extends Component {
         this.props.navigator.pop({
             animated: true
         });
-    }
-
-
+    }  
 
     onSignUp(){
         const { nameup, passup, latitude ,longitude} = this.state;
+        if(nameup == ''){
+            this.props.actions.addNotification('Name not null');
+        }else if(passup == ''){
+            this.props.actions.addNotification('Pass not null');
+        }else{
         DB.db().transaction((tx) => {
             tx.executeSql('INSERT INTO Person( Person_id, name, pass, locationlan, locationlong) Values(null,?,?,?,?)', [nameup, passup, latitude, longitude], () => {
                 this.props.navigator.push({
@@ -50,18 +57,14 @@ class SignUp extends Component {
                         navBarHidden: true
                     }
                 })
-
             })
-
         });
-
     }
-
-
+}
     render() {
         const { container, texttitle, textBack, textlogin, inputstyle, btnSignIn, logo1, btnlocation } = styles;
         return (
-            <View>
+            <Container>
                 <Image source={backgr} style={container} />
                 <View style={texttitle} >
                     <TouchableOpacity onPress={ () => this.onBack() } >
@@ -99,7 +102,7 @@ class SignUp extends Component {
                         <Text style={{ textAlign: 'center', color: '#fff' }} >ĐĂNG KÝ</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </Container>
         );
     }
 }
@@ -163,4 +166,9 @@ const styles = StyleSheet.create({
     }
     
 });
-export default SignUp;
+
+export default connect(null,(dispatch) => {
+    return {
+        actions: bindActionCreators(Object.assign({}, NotificationActions), dispatch)
+    };
+})(SignUp);

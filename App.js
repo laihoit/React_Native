@@ -7,9 +7,8 @@ import DB from './src/Components/database/DB';
 registerScreens(store, Provider);
 
 class AppContainer {
-  onStoreUpdate() {
-    var state = store.getState();
-    if(state.checkLogin.isLoggedIn){
+  registerScreen(root) {
+    if(root){
       Navigation.startSingleScreenApp({
         screen:{
           screen : 'Home',  
@@ -30,18 +29,24 @@ class AppContainer {
           navigatorStyle:{
             navBarHidden: true
           },
-        },   
-        drawer: {  
-          left:{
-            screen : 'Drawer'
-          }
         }
       })
     }
   }
 
+  onStoreUpdate() {
+    const a = store.getState();
+    if (this.root !== a.checkLogin.isLoggedIn) {
+      this.root = a.checkLogin.isLoggedIn;
+      this.registerScreen(this.root);
+    }
+  }
+
 	constructor() {
     DB.loadAndQueryDB();
+    const state = store.getState();
+    this.root = state.checkLogin.isLoggedIn;
+    this.registerScreen(this.root)
     store.subscribe(this.onStoreUpdate.bind(this));
 	}
 }

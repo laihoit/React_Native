@@ -5,6 +5,10 @@ import backgr from "../../picture/sky.jpg";
 import logo from "../../picture/logo.png";
 
 import DB from '../database/DB';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as Notification from '../notifications/action';
+import { Container } from '../component/index';
 
 const { width, height } = Dimensions.get('window');
 class UpdatePass extends Component {
@@ -27,6 +31,9 @@ class UpdatePass extends Component {
 
     updatepass(){
         const { nameAcount } = this.props;
+        if(nameAcount == ''){
+            this.props.actions.addNotification('Name not null');
+        }
         DB.db().transaction((tx) => {
             var sql = 'UPDATE Person SET pass=\''+this.state.passcheck+'\' WHERE name=\''+nameAcount+'\'' ;
             tx.executeSql(sql, [] ,(tx , results) => {
@@ -45,7 +52,7 @@ class UpdatePass extends Component {
     render() {
         const { container, texttitle, textBack, textlogin, inputstyle, btnSignIn, logo1 } = styles;
         return (
-            <View>
+            <Container>
                 <Image source={backgr} style={container} />
                 <View style={texttitle} >
                     <TouchableOpacity onPress={ () => this.onBack() } >
@@ -69,7 +76,7 @@ class UpdatePass extends Component {
                         <Text style={{ textAlign: 'center', color: '#fff' }} >XÁC NHÂN</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </Container>
         );
     }
 }
@@ -123,4 +130,8 @@ const styles = StyleSheet.create({
     },
 
 });
-export default UpdatePass;
+export default  connect(null, (dispatch) => {
+    return {
+        actions : bindActionCreators(Object.assign({}, Notification), dispatch)
+    }
+})(UpdatePass);

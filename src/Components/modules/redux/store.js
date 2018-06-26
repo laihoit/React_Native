@@ -14,7 +14,8 @@ const enhancer = compose(
 const store = createStore(reducer, enhancer);
 
 export const persist = persistStore(store, {
-    storage : AsyncStorage
+    storage : AsyncStorage,
+    blacklist: ['message']
 }); 
 
 export default store;

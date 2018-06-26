@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Linking, Alert } from 'react-native';
 
+let rootNavigator = null;
 
+export function getRootNavigator(){
+    return rootNavigator;
+}
 class Home extends Component {
     constructor(props){
         super(props);
@@ -9,6 +13,7 @@ class Home extends Component {
         this.state = {
             albums: [],
         }; 
+        rootNavigator = this.props.navigator;
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
 

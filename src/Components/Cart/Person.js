@@ -49,6 +49,12 @@ class Person extends Component {
         })
       //  store.dispatch(resetPersisStore());
     }
+    onEditPerson(){
+        this.props.navigator.push({
+            screen: 'EditPerson',
+            title: 'EditPerson'
+        })
+    }
 
     render() {
         const {container,imgInfo, avatarImgInfo,avatarView, myInfo,nameInfo,userNameInfo,
@@ -58,9 +64,9 @@ class Person extends Component {
             <View style = {container}>
                 <View style= {myInfo}>
                     <View style ={imgInfo}>
-                          <View style={imgEdit}>
+                          <TouchableOpacity style={imgEdit} onPress={() => this.onEditPerson()} >
                             <Image source = {edit} style={editIcon}/>
-                          </View>
+                          </TouchableOpacity>
                           <View style= {avatarView}>
                           <Image source= {avatar} style={avatarImgInfo}/>
                           </View> 

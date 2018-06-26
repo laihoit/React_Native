@@ -1,28 +1,32 @@
 import React, { Component } from 'react';
 import {StyleSheet, View, Button, Image} from 'react-native';
+import { getRootNavigator } from '../screen/Home';
 
 class Drawer extends Component {
 
     onShowHome = () => {
         this.props.navigator.toggleDrawer({
-          side: 'left'
+          side: 'left', to: 'closed'
         });
       };
     
       onShowHomeUser = () => {
-        this.props.navigator.showModal({
+        this.props.navigator.toggleDrawer({ side: 'left', to: 'closed' });
+        getRootNavigator().push({
             screen: 'HomeUser',
             title: 'HomeUser',
           });
       };
       onShowMymap = () => {
-        this.props.navigator.showModal({
+        this.props.navigator.toggleDrawer({ side: 'left', to: 'closed' });
+        getRootNavigator().push({
             screen: 'MyMap',
             title: 'MyMap',
           });
       };
       onShowUser = () => {
-        this.props.navigator.showModal({
+        this.props.navigator.toggleDrawer({ side: 'left', to: 'closed' });
+        getRootNavigator().push({
             screen: 'User',
             title: 'User',
           });

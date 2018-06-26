@@ -4,6 +4,9 @@ import DB from '../database/DB';
 import { connect } from 'react-redux';
 import { setLoginState } from '../modules/Login/action';
 import store from '../modules/redux/store';
+import { bindActionCreators } from 'redux';
+import * as NotificationActions from '../notifications/action';
+import { Container } from '../component/index';
 
 import backgr from "../../picture/sky.jpg";
 import logo from "../../picture/logo.png";
@@ -34,37 +37,44 @@ class SignIn extends Component {
         })
     }
     onSubmit(){
+        const { name, pass } = this.state;
+        if (name == ''){
+            this.props.actions.addNotification('Name not null');
+        }else if(pass == ''){
+            this.props.actions.addNotification('Pass not null');
+        }else{
         DB.db().transaction((tx) => {
-            var sql = 'SELECT * FROM Person WHERE name=\'' + this.state.name + '\'';
+            var sql = 'SELECT * FROM Person WHERE name=\'' + name + '\'';
             tx.executeSql(sql, [], (tx, results) => {
                 var len = results.rows.length;
                 if(len == 0)
-                    Alert.alert('Tài khoản không tồn tại');
+                this.props.actions.addNotification('Tài khoản không tồn tại');
                  else{
                     var row = results.rows.item(0);
-                    if(this.state.pass == row.pass){
-                        store.dispatch(setLoginState({ isLoggedIn : true, user : this.state.name }))
+                    if(pass == row.pass){
+                        store.dispatch(setLoginState({ isLoggedIn : true, user : name }))
                         this.props.navigator.push({
                             screen: 'Home',
                             title: 'Albums',
                             passProps: {
-                                nameAcount : this.state.name
+                                nameAcount : name
                             }
                         })
 
                     Alert.alert('Đăng nhập thành công');
                     }else
-                    Alert.alert('Sai tài khoản hoặc mật khẩu');
+                    this.props.actions.addNotification('Sai tài khoản hoặc mật khẩu');
                 }
               });
           });
-      
+        }
     }
     render() {
+        console.log('RENDER LOGIn')
         const { container, SectionStyle, texttitle, textBack, textlogin,
             inputstyle, btnSignIn, textfina, logo1, ImageStyle, orther } = styles;
         return (
-            <View>
+            <Container>
                 <Image source={backgr} style={container} />
                 <View style={texttitle} >
                     <TouchableOpacity>
@@ -114,7 +124,7 @@ class SignIn extends Component {
                     </View>
                     
                 </View>
-            </View>
+            </Container>
         );
     }
 }
@@ -188,8 +198,12 @@ const styles = StyleSheet.create({
     },
     orther:{
         flexDirection: 'row',
-        marginTop: 120,
+        marginTop: 80,
     }
 });
 
-export default connect()(SignIn);
+export default connect(null,(dispatch) => {
+    return {
+        actions: bindActionCreators(Object.assign({}, NotificationActions), dispatch)
+    };
+})(SignIn); 

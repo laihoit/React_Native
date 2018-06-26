@@ -5,9 +5,8 @@ import MapViewDirections from 'react-native-maps-directions';
 
 const { width, height } = Dimensions.get('window');
 
-
 const GOOGLE_MAPS_APIKEY = 'AIzaSyDnwLF2-WfK8cVZt9OoDYJ9Y8kspXhEHfI';
-const DEFAULT_PADDING = { top: 40, right: 40, bottom: 40, left: 40 };
+const DEFAULT_PADDING = { top: 4000, right: 4000, bottom: 4000, left: 4000 };
 
 export default class MyMap extends Component {
     constructor(props) {
@@ -55,7 +54,7 @@ export default class MyMap extends Component {
     };
     onNavigatorEvent(e) {
         if (e.id == 'back') {
-            this.props.navigator.dismissModal();
+            this.props.navigator.pop();
         }
     }
     componentDidMount() {
@@ -103,7 +102,15 @@ export default class MyMap extends Component {
         return renderMarkers;
     }
     findDirectionbetweentowpoint() {
-        const { addressbegin, addressend } = this.state
+        const { addressbegin, addressend } = this.state;
+        // const markerstart = {
+        //     latitude: this.state.findlatstart,
+        //     longitude: this.state.findlongstart
+        // }
+        // const markerend = {
+        //     latitude: this.state.findlatend,
+        //     longitude: this.state.findlongend
+        // }
         fetch('https://maps.googleapis.com/maps/api/directions/json?origin=' + addressbegin + '&destination=' + addressend + '&region=vn&key=AIzaSyDnwLF2-WfK8cVZt9OoDYJ9Y8kspXhEHfI')
             .then(response => response.json)
             .then(responseJson => {
@@ -144,6 +151,10 @@ export default class MyMap extends Component {
             .catch((error) => {
                 console.error(error);
             });
+            // this.map.fitToCoordinates([markerstart, markerend], {
+            //     edgePadding: DEFAULT_PADDING,
+            //     animated: true,
+            // });
     }
     renderfindlocation() {
         return (

@@ -22,7 +22,7 @@ class HomeUser extends Component {
     };
     onNavigatorEvent(e) {
         if (e.id == 'back') {
-            this.props.navigator.dismissModal();
+            this.props.navigator.pop();
         }
     }
         
@@ -47,7 +47,7 @@ class HomeUser extends Component {
                 myemail: item.email,
                 mylocal: item.location.street,
                 mydate: item.registered.date,
-                myphone: item.phone ,
+                myphone: item.cell ,
                 myname: item.name.last,
                 mystate: item.location.state,
                 mysex : item.gender

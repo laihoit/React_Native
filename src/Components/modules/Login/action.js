@@ -1,5 +1,4 @@
 import * as types from '../config/actionTypes'
-import { persist } from '../redux/store';
 
 export function setLoginState(status) {
     return function (dispatch) {

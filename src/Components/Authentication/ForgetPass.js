@@ -5,6 +5,10 @@ import backgr from "../../picture/sky.jpg";
 import logo from "../../picture/logo.png";
 
 import DB from '../database/DB';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as Notification from '../notifications/action';
+import { Container } from '../component';
 
 const { width, height } = Dimensions.get('window');
 class ForgetPass extends Component {
@@ -33,8 +37,12 @@ class ForgetPass extends Component {
         })
     }
     checkacount(){
+        const { namecheck } = this.state;
+        if(namecheck == ''){
+            this.props.actions.addNotification('Name not null');
+        }else{
         DB.db().transaction((tx) =>{
-            var sql = 'SELECT * FROM Person WHERE name=\'' + this.state.namecheck + '\'';
+            var sql = 'SELECT * FROM Person WHERE name=\'' + namecheck + '\'';
             tx.executeSql(sql,[], (tx , results) => {
                 var len = results.rows.length;
                 if(len == 0){
@@ -46,11 +54,11 @@ class ForgetPass extends Component {
             })
         })
     }
-
+    }
     render() {
         const { container, texttitle, textBack, textlogin, inputstyle, btnSignIn, logo1, btnlocation } = styles;
         return (
-            <View>
+            <Container>
                 <Image source={backgr} style={container} />
                 <View style={texttitle} >
                     <TouchableOpacity onPress={ () => this.onBack() } >
@@ -74,7 +82,7 @@ class ForgetPass extends Component {
                         <Text style={{ textAlign: 'center', color: '#fff' }} >XÁC NHÂN</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </Container>
         );
     }
 }
@@ -138,4 +146,8 @@ const styles = StyleSheet.create({
     }
     
 });
-export default ForgetPass;
+export default connect(null, (dispatch) => {
+    return {
+        actions : bindActionCreators(Object.assign({}, Notification), dispatch)
+    }
+})(ForgetPass);
