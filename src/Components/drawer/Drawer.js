@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {StyleSheet, View, Button, Image} from 'react-native';
+import {StyleSheet, View, Button, Image, ScrollView} from 'react-native';
 import { getRootNavigator } from '../screen/Home';
 
 class Drawer extends Component {
@@ -35,7 +35,7 @@ class Drawer extends Component {
   render() {
       const { container, button, Viewhr, imageStyle } = styles;
     return (
-      <View style={container}>
+      <ScrollView style={container}>
       <View>
           <Image
           source={require('../../picture/logo.png')}
@@ -75,7 +75,7 @@ class Drawer extends Component {
             onPress={this.onShowUser}
             title="User"/>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30
   }
+  
 });
 
 export default Drawer;

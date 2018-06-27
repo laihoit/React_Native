@@ -3,6 +3,7 @@ import { View, Text,StyleSheet , Dimensions, Image, Alert, TouchableOpacity } fr
 import DB from '../database/DB';
 import store from '../modules/redux/store';
 import { setLoginState, resetPersisStore } from '../modules/Login/action';
+import { Container } from '../component/index';
 
 import avatar from '../../picture/avatar.png';
 import edit from '../../picture/edit.png';
@@ -21,7 +22,7 @@ class Person extends Component {
                 longtitude : ''
         }
     }
-    
+
     componentDidMount(){
         DB.db().transaction((tx) => {
             var sql = 'SELECT * FROM Person WHERE name=\'' + this.props.mystate + '\'';
@@ -55,11 +56,11 @@ class Person extends Component {
     }
 
     render() {
-        const {container,imgInfo, avatarImgInfo,avatarView, myInfo,nameInfo,userNameInfo,
+        const {imgInfo, avatarImgInfo,avatarView, myInfo,nameInfo,userNameInfo,
           linkUserNameInfo,imgEdit,editIcon, hr, itemInfo, itemImg, itemIcon,itemText} = style;
         //    if(this.props.mystate.user != ''){
         return (  
-            <View style = {container}>
+            <Container>
                 <View style= {myInfo}>
                     <View style ={imgInfo}>
                           <TouchableOpacity style={imgEdit} onPress={() => this.onEditPerson()} >
@@ -104,7 +105,7 @@ class Person extends Component {
                             </Text>
                         </TouchableOpacity>
                 </View>
-            </View>
+            </Container>
         )
     // }else if(this.props.mystate.user == ''){
     //     Alert.alert('Bạn cần phải đăng nhập!');
@@ -119,11 +120,6 @@ class Person extends Component {
 }
 
 const style = StyleSheet.create({
-    container:{
-        padding: 10,
-        width : width,
-        height : height, 
-    },
     myInfo:{
         padding:8,
         paddingBottom:12,

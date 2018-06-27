@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import DB from '../database/DB';
 import store from '../modules/redux/store';
 import { setLoginState } from '../modules/Login/action';
+import ImagePicker from 'react-native-image-picker';
 
 import avatar from '../../picture/avatar.png';
 import camera from '../../picture/camera.png';
@@ -74,7 +75,9 @@ class EditPerson extends Component {
                           <Text style={nameText}>Họ và tên</Text>
                           <InputField placeholder="Đổi tên ở đây"
                           placeholderTextColor ="#22222226"
-                          
+                          onChangeText={(nameacount) => {
+                            this.setState({nameacount})
+                          }}
                           value={nameacount}
                           />
                       </View> 
@@ -83,6 +86,9 @@ class EditPerson extends Component {
                           <Text style={editText}>Số điện thoại</Text>
                           <InputField placeholder="Đổi số điện thoại"
                           placeholderTextColor ="#22222226"
+                          onChangeText={(lantitude) => {
+                            this.setState({lantitude})
+                          }}
                           value={lantitude}
                           />
                     </View> 
@@ -91,6 +97,9 @@ class EditPerson extends Component {
                           <Text style={editText}>Email</Text>
                           <InputField placeholder="Đổi email"
                           placeholderTextColor ="#22222226"
+                          onChangeText={(longtitude) => {
+                            this.setState({longtitude})
+                          }}
                           value={longtitude}
                           />
                     </View>
@@ -106,6 +115,9 @@ class EditPerson extends Component {
                           <Text style={editText}>Mật khẩu</Text>
                           <InputField placeholder="Đổi mật khẩu" 
                           placeholderTextColor ="#22222226"
+                          onChangeText={(pass) => {
+                            this.setState({pass})
+                          }}
                           value={pass}
                           />
                     </View> 

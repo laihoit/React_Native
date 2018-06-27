@@ -22,7 +22,6 @@ class SignIn extends Component {
         this.state = {
             name: '',
             pass: '',
-            iduer: null
         }
     }
     onSignUp(){
@@ -38,7 +37,7 @@ class SignIn extends Component {
         })
     }
     onSubmit(){
-        const { name, pass, iduer } = this.state;
+        const { name, pass } = this.state;
         if (name == ''){
             this.props.actions.addNotification('Name not null');
         }else if(pass == ''){
@@ -57,9 +56,7 @@ class SignIn extends Component {
                         this.props.navigator.push({
                             screen: 'Home',
                             title: 'Albums',
-                            passProps: {
-                                IDuser : idac
-                            }
+                         
                         })
 
                     Alert.alert('Đăng nhập thành công' );
