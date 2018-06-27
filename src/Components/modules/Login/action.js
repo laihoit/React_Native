@@ -11,7 +11,7 @@ export function loginState(state) {
         type: types.Check.CHECK_LOGIN,
         action: {
             isLoggedIn: state.isLoggedIn,
-            user: state.user
+            user: state.user,
         }
     };
 } 

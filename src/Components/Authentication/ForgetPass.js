@@ -86,13 +86,11 @@ class ForgetPass extends Component {
         );
     }
 }
-const widthbg = width;
-const heightbg = (widthbg / 540) * 960;
+
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        width: widthbg,
-        height: heightbg
+        width : width
     },
     texttitle: {
         flexDirection: 'row',

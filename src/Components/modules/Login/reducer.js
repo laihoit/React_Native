@@ -3,7 +3,7 @@ import * as types from '../config/actionTypes';
 
 const initialState = {
     isLoggedIn: false,
-    user: ''
+    user: '',
 }; 
 
 export default reducer = createReducer(initialState , {
@@ -11,7 +11,7 @@ export default reducer = createReducer(initialState , {
         return {
             ...state,
             isLoggedIn: action.action.isLoggedIn,
-            user: action.action.user
+            user: action.action.user,
         }
     }
 })

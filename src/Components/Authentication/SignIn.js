@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, Image, StyleSheet, TextInput, Dimensions, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import DB from '../database/DB';
 import { connect } from 'react-redux';
 import { setLoginState } from '../modules/Login/action';
@@ -21,7 +21,8 @@ class SignIn extends Component {
         super(props)
         this.state = {
             name: '',
-            pass: ''
+            pass: '',
+            iduer: null
         }
     }
     onSignUp(){
@@ -37,7 +38,7 @@ class SignIn extends Component {
         })
     }
     onSubmit(){
-        const { name, pass } = this.state;
+        const { name, pass, iduer } = this.state;
         if (name == ''){
             this.props.actions.addNotification('Name not null');
         }else if(pass == ''){
@@ -57,11 +58,11 @@ class SignIn extends Component {
                             screen: 'Home',
                             title: 'Albums',
                             passProps: {
-                                nameAcount : name
+                                IDuser : idac
                             }
                         })
 
-                    Alert.alert('Đăng nhập thành công');
+                    Alert.alert('Đăng nhập thành công' );
                     }else
                     this.props.actions.addNotification('Sai tài khoản hoặc mật khẩu');
                 }
@@ -70,7 +71,6 @@ class SignIn extends Component {
         }
     }
     render() {
-        console.log('RENDER LOGIn')
         const { container, SectionStyle, texttitle, textBack, textlogin,
             inputstyle, btnSignIn, textfina, logo1, ImageStyle, orther } = styles;
         return (
@@ -128,14 +128,11 @@ class SignIn extends Component {
         );
     }
 }
-const widthbg = width;
-const heightbg = (widthbg / 540) * 960;
 
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        width: widthbg,
-        height: heightbg
+        width: width
     },
     texttitle: {
         flexDirection: 'row',

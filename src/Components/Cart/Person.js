@@ -21,9 +21,7 @@ class Person extends Component {
                 longtitude : ''
         }
     }
-
-
-
+    
     componentDidMount(){
         DB.db().transaction((tx) => {
             var sql = 'SELECT * FROM Person WHERE name=\'' + this.props.mystate + '\'';

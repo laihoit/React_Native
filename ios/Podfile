@@ -26,6 +26,8 @@ target 'NavigaA' do
     pod 'react-native-sqlite-storage', :path => '../node_modules/react-native-sqlite-storage'
 
     
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
 end
 post_install do |installer|
     installer.pods_project.targets.each do |target|

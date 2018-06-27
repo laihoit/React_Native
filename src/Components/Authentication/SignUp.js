@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, TextInput, Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, Image, StyleSheet, TextInput, Dimensions, TouchableOpacity,} from 'react-native';
 
 import backgr from "../../picture/sky.jpg";
 import logo from "../../picture/logo.png";
@@ -106,13 +106,11 @@ class SignUp extends Component {
         );
     }
 }
-const widthbg = width;
-const heightbg = (widthbg / 540) * 960;
+
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        width: widthbg,
-        height: heightbg
+        width : width
     },
     texttitle: {
         flexDirection: 'row',
