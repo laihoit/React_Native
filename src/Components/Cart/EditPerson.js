@@ -10,6 +10,17 @@ import ImagePicker from 'react-native-image-picker';
 import avatar from '../../picture/avatar.png';
 import camera from '../../picture/camera.png';
 
+var options = {
+    title: 'Select Avatar',
+    customButtons: [
+      {name: 'fb', title: 'Choose Photo from Facebook'},
+    ],
+    storageOptions: {
+      skipBackup: true,
+      path: 'images'
+    }
+  };
+
 class EditPerson extends Component {
     constructor(props){
         super(props);
@@ -17,7 +28,8 @@ class EditPerson extends Component {
                 nameacount :'', 
                 lantitude: '',
                 longtitude : '',
-                pass: ''
+                pass: '',
+                avatarSource : ''
         }
     }
 
@@ -54,10 +66,31 @@ class EditPerson extends Component {
             })
         })
     }
+    getImagePicker(){
+        ImagePicker.showImagePicker(options, (response) => {
+            if (response.didCancel) {
+              console.log('User cancelled image picker');
+            }
+            else if (response.error) {
+              console.log('ImagePicker Error: ', response.error);
+            }
+            else if (response.customButton) {
+              console.log('User tapped custom button: ', response.customButton);
+            }
+            else {
+              let source = { uri: response.uri };
+          
+              this.setState({
+                avatarSource: source
+              });
+            }
+          });
+          
+    }
     render() {
         const {container, imgInfo,nameAndAvatarView, avatarImgInfo,avatarView,editView,editIcon, myInfo,nameInfo,nameText
           ,itemEdit, editText,button,editButtonView,editButtonText} = style;
-          const { nameacount, lantitude, longtitude, pass } = this.state;
+          const { nameacount, lantitude, longtitude, pass, avatarSource } = this.state;
         return (
             <Container>
                 <ScrollView style={ container} >
@@ -65,11 +98,13 @@ class EditPerson extends Component {
                    <View style ={nameAndAvatarView}>
                       <View style ={imgInfo}>
                           <View style= {avatarView}>
-                          <Image source= {avatar} style={avatarImgInfo}/>
+                          <Image source= {avatarSource ? avatarSource : avatar} style={avatarImgInfo}/>
                           </View> 
-                          <View style={editView}>
+                          <TouchableOpacity style={editView}
+                          onPress={() => this.getImagePicker()}
+                          >
                             <Image source = {camera} style={editIcon}/>
-                          </View>
+                          </TouchableOpacity>
                       </View>
                       <View style={nameInfo} >
                           <Text style={nameText}>Họ và tên</Text>
