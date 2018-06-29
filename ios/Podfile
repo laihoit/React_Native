@@ -25,10 +25,10 @@ target 'NavigaA' do
     pod 'react-native-google-maps', path: '../node_modules/react-native-maps/'  # <~~ if you need GoogleMaps support on iOS
     pod 'react-native-sqlite-storage', :path => '../node_modules/react-native-sqlite-storage'
 
-    
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
 end
 post_install do |installer|

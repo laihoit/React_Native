@@ -6,10 +6,12 @@ PODS:
     - GoogleMaps/Base
   - React (0.55.4):
     - React/Core (= 0.55.4)
-  - react-native-google-maps (0.17.0):
+  - react-native-google-maps (0.17.1):
     - GoogleMaps (= 2.1.1)
     - React
-  - react-native-maps (0.17.0):
+  - react-native-maps (0.17.1):
+    - React
+  - react-native-sqlite-storage (3.3.6):
     - React
   - React/Core (0.55.4):
     - yoga (= 0.55.4.React)
@@ -48,6 +50,7 @@ DEPENDENCIES:
   - GoogleMaps
   - react-native-google-maps (from `../node_modules/react-native-maps/`)
   - react-native-maps (from `../node_modules/react-native-maps/`)
+  - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
   - React/Core (from `../node_modules/react-native`)
   - React/DevSupport (from `../node_modules/react-native`)
   - React/RCTActionSheet (from `../node_modules/react-native`)
@@ -73,6 +76,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps/"
   react-native-maps:
     :path: "../node_modules/react-native-maps/"
+  react-native-sqlite-storage:
+    :path: "../node_modules/react-native-sqlite-storage"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -81,8 +86,9 @@ SPEC CHECKSUMS:
   React: aa2040dbb6f317b95314968021bd2888816e03d5
   react-native-google-maps: 7a280302cdf0bcddc7efa6ec55423b17dcbeb1fe
   react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
+  react-native-sqlite-storage: 848fb96c0b6d17b3f70e169ac41f84434cdad94c
   yoga: a23273df0088bf7f2bb7e5d7b00044ea57a2a54a
 
-PODFILE CHECKSUM: 454bbdb927c76a770f7f7e4bf63c7e9a2717f18d
+PODFILE CHECKSUM: 52038917a4cc68d8312ac70fca065a240af55f10
 
 COCOAPODS: 1.5.3
