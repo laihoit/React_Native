@@ -4,6 +4,7 @@ import DB from '../database/DB';
 import store from '../modules/redux/store';
 import { setLoginState, resetPersisStore } from '../modules/Login/action';
 import { Container } from '../component/index';
+import * as Attachmentactor from '../attachment/action';
 
 import avatar from '../../picture/avatar.png';
 import edit from '../../picture/edit.png';
@@ -19,20 +20,21 @@ class Person extends Component {
         this.state= {
                 nameacount :'', 
                 lantitude: '',
-                longtitude : ''
+                longtitude : '',
+                imageuser : ''
         }
     }
 
     componentDidMount(){
         DB.db().transaction((tx) => {
-            var sql = 'SELECT * FROM Person WHERE name=\'' + this.props.mystate + '\'';
+            var sql = 'SELECT * FROM Lai WHERE name=\'' + this.props.mystate + '\'';
             tx.executeSql(sql, [], (tx, results) => {
                 var len = results.rows.lenght;
                 if(len == 0 && this.props.username == ''){
                     Alert.alert('Bạn cần phải đăng nhập!');
                 }else {
                     var row = results.rows.item(0);
-                    this.setState({ nameacount : row.name , lantitude : row.locationlan, longtitude : row.locationlong })
+                    this.setState({ nameacount : row.name , lantitude : row.locationlan, longtitude : row.locationlong , imageuser : row.image})
                 }
             })
         })
@@ -59,6 +61,7 @@ class Person extends Component {
         const {imgInfo, avatarImgInfo,avatarView, myInfo,nameInfo,userNameInfo,
           linkUserNameInfo,imgEdit,editIcon, hr, itemInfo, itemImg, itemIcon,itemText} = style;
         //    if(this.props.mystate.user != ''){
+            const { imageuser } = this.state;
         return (  
             <Container>
                 <View style= {myInfo}>
@@ -67,7 +70,7 @@ class Person extends Component {
                             <Image source = {edit} style={editIcon}/>
                           </TouchableOpacity>
                           <View style= {avatarView}>
-                          <Image source= {avatar} style={avatarImgInfo}/>
+                          <Image source= {{uri : Attachmentactor.getMediaPath(imageuser) ? Attachmentactor.getMediaPath(imageuser) : avatar}} style={avatarImgInfo}/>
                           </View> 
                     </View>
 
@@ -143,6 +146,7 @@ const style = StyleSheet.create({
     avatarImgInfo:{
         width: 60,
         height:60,
+        borderRadius: 25
     },
     nameInfo:{
         paddingLeft:5

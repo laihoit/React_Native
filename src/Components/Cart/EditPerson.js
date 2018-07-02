@@ -3,13 +3,12 @@ import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, ScrollView
 import {Container, InputField } from '../component/index';
 import { connect } from 'react-redux';
 import DB from '../database/DB';
-import store from '../modules/redux/store';
-import { setLoginState } from '../modules/Login/action';
 import ImagePicker from 'react-native-image-picker';
+import * as AttachmentActor from '../attachment/action';
 
 import avatar from '../../picture/avatar.png';
 import camera from '../../picture/camera.png';
-
+  
 var options = {
     title: 'Select Avatar',
     customButtons: [
@@ -17,7 +16,7 @@ var options = {
     ],
     storageOptions: {
       skipBackup: true,
-      path: 'images'
+      path: '/Attachments/Application/'
     }
   };
 
@@ -36,7 +35,7 @@ class EditPerson extends Component {
     componentDidMount(){
         const { user } = this.props;
         DB.db().transaction((tx) => {
-            var sql = 'SELECT * FROM Person WHERE name=\'' + user + '\'';
+            var sql = 'SELECT * FROM Lai WHERE name=\'' + user + '\'';
             tx.executeSql(sql, [], (tx, results) => {
                 var len = results.rows.lenght;
                 if(len == 0 && this.props.username == ''){
@@ -50,15 +49,10 @@ class EditPerson extends Component {
     }
     UpdateUser(){
         const { user } = this.props;
-        const { nameacount, lantitude, longtitude } = this.state;
+        const {lantitude, longtitude, avatarSource } = this.state;
         DB.db().transaction((tx) => {
-            var dele = 'DELETE FROM Person WHERE name=\''+user+'\'';
-            tx.executeSql(sql, [], (tx, results) => {
-            })
-        })
-        DB.db().transaction((tx) => {
-            tx.executeSql('INSERT INTO Person( Person_id, name, pass, locationlan, locationlong) Values(null,?,?,?,?)', [nameacount, pass, lantitude, longtitude], () => {
-                store.dispatch(setLoginState({ isLoggedIn : true, user : nameacount }))
+            var sql = 'UPDATE Lai SET image=\''+avatarSource +'\', locationlan=\'' +lantitude +'\', locationlong=\'' +longtitude+'\' WHERE name=\''+user+'\'' ;
+            tx.executeSql(sql,[], (tx, result) => {
                 this.props.navigator.push({
                     screen :'Person',
                 })
@@ -78,11 +72,15 @@ class EditPerson extends Component {
               console.log('User tapped custom button: ', response.customButton);
             }
             else {
-              let source = { uri: response.uri };
-          
-              this.setState({
-                avatarSource: source
-              });
+              AttachmentActor.saveImage(response.uri)
+              .then(response => {
+                this.setState({
+                    avatarSource: response
+                  }, () => console.log('abc ' + this.state.avatarSource));
+                  
+              })
+              .catch(error => console.log(error))
+              
             }
           });
           
@@ -98,7 +96,7 @@ class EditPerson extends Component {
                    <View style ={nameAndAvatarView}>
                       <View style ={imgInfo}>
                           <View style= {avatarView}>
-                          <Image source= {avatarSource ? avatarSource : avatar} style={avatarImgInfo}/>
+                          <Image source= {{uri : AttachmentActor.getMediaPath(avatarSource) ? AttachmentActor.getMediaPath(avatarSource) : avatar}} style={avatarImgInfo}/>
                           </View> 
                           <TouchableOpacity style={editView}
                           onPress={() => this.getImagePicker()}
@@ -114,6 +112,7 @@ class EditPerson extends Component {
                             this.setState({nameacount})
                           }}
                           value={nameacount}
+                          editable={false}
                           />
                       </View> 
                     </View>
@@ -154,6 +153,7 @@ class EditPerson extends Component {
                             this.setState({pass})
                           }}
                           value={pass}
+                          editable={false}
                           />
                     </View> 
                 </View>
@@ -203,6 +203,7 @@ const style = StyleSheet.create({
     avatarImgInfo:{
         width:60,
         height:60,
+        borderRadius: 25
     },
     nameInfo:{
       padding:8,

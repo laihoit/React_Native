@@ -18,7 +18,8 @@ class SignUp extends Component {
             nameup: '',
             passup: '',
             latitude: '',
-            longitude: ''
+            longitude: '',
+            image: ''
         }
     }
     static navigatorStyle = {
@@ -43,14 +44,14 @@ class SignUp extends Component {
     }  
 
     onSignUp(){
-        const { nameup, passup, latitude ,longitude} = this.state;
+        const { nameup, passup, latitude ,longitude, image} = this.state;
         if(nameup == ''){
             this.props.actions.addNotification('Name not null');
         }else if(passup == ''){
             this.props.actions.addNotification('Pass not null');
         }else{
         DB.db().transaction((tx) => {
-            tx.executeSql('INSERT INTO Person( Person_id, name, pass, locationlan, locationlong) Values(null,?,?,?,?)', [nameup, passup, latitude, longitude], () => {
+            tx.executeSql('INSERT INTO Lai( Lai_id,image, name, pass, locationlan, locationlong) Values(null,?,?,?,?,?)', [image, nameup, passup, latitude, longitude], () => {
                 this.props.navigator.push({
                     screen :'SignIn',
                     navigatorStyle:{
@@ -95,7 +96,7 @@ class SignUp extends Component {
                         value= { this.state.latitude + "," + this.state.longitude }
                         underlineColorAndroid="transparent"
                         placeholderTextColor="#fff"
-                    
+                        editable={false}
                     />
                     
                     <TouchableOpacity style={btnSignIn} onPress={ () => this.onSignUp() }>

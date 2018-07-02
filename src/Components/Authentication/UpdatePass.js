@@ -35,7 +35,7 @@ class UpdatePass extends Component {
             this.props.actions.addNotification('Name not null');
         }
         DB.db().transaction((tx) => {
-            var sql = 'UPDATE Person SET pass=\''+this.state.passcheck+'\' WHERE name=\''+nameAcount+'\'' ;
+            var sql = 'UPDATE Lai SET pass=\''+this.state.passcheck+'\' WHERE name=\''+nameAcount+'\'' ;
             tx.executeSql(sql, [] ,(tx , results) => {
                 this.props.navigator.push({
                     screen: 'SignIn',

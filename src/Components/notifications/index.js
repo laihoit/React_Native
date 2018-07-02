@@ -26,7 +26,6 @@ class NotificationContainer extends Component {
     }
 
     render() {
-        console.log('RENDER MESSAGE')
         if (this.props.message) {
             return (
                 <TouchableOpacity style={styles.container} onPress={() => this.props.actions.removeNotification()}>

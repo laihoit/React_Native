@@ -34,8 +34,9 @@ class DB extends Component{
       }
 
       populateDB =(tx) => {
-        tx.executeSql('CREATE TABLE IF NOT EXISTS Person( '
-        + 'Person_id INTEGER PRIMARY KEY NOT NULL, '
+        tx.executeSql('CREATE TABLE IF NOT EXISTS Lai( '
+        + 'Lai_id INTEGER PRIMARY KEY NOT NULL, '
+        + 'image TEXT, '
         + 'name VARCHAR(20), '
         + 'pass TEXT, '
         + 'locationlan TEXT, '

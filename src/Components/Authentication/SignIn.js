@@ -44,7 +44,7 @@ class SignIn extends Component {
             this.props.actions.addNotification('Pass not null');
         }else{
         DB.db().transaction((tx) => {
-            var sql = 'SELECT * FROM Person WHERE name=\'' + name + '\'';
+            var sql = 'SELECT * FROM Lai WHERE name=\'' + name + '\'';
             tx.executeSql(sql, [], (tx, results) => {
                 var len = results.rows.length;
                 if(len == 0)
