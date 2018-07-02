@@ -50,9 +50,10 @@ class UpdatePass extends Component {
     }
 
     render() {
-        const { container, texttitle, textBack, textlogin, inputstyle, btnSignIn, logo1 } = styles;
+        const {index, container, texttitle, textBack, textlogin, inputstyle, btnSignIn, logo1 } = styles;
         return (
             <Container>
+                <View style={index} >
                 <Image source={backgr} style={container} />
                 <View style={texttitle} >
                     <TouchableOpacity onPress={ () => this.onBack() } >
@@ -76,12 +77,16 @@ class UpdatePass extends Component {
                         <Text style={{ textAlign: 'center', color: '#fff' }} >XÁC NHÂN</Text>
                     </TouchableOpacity>
                 </View>
+                </View>
             </Container>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    index: {
+        height: height
+    },
     container: {
         position: 'absolute',
         width : width

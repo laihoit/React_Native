@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { View, SafeAreaView, StyleSheet, StatusBar, ScrollView } from 'react-native';
+import { View, SafeAreaView, StyleSheet, StatusBar, ScrollView, Dimensions } from 'react-native';
 import Notification from '../notifications/index';
 import { changeOrientation } from '../appstate/action';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 StatusBar.setHidden(true)
-
+const { height } = Dimensions.get('window');
 class Container extends Component{
     onLayout(e){
         const { width, height } = e.nativeEvent.layout;
@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
+        height : height
     }
 });
 const mapStateToProps = (state) => {

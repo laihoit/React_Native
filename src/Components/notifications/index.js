@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Animated, TouchableOpacity, Text, Alert } from 'react-native';
+import { View, StyleSheet, Animated, TouchableOpacity, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as NotificationAction from './action';
@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
         left: 0,
         height: 50,
         backgroundColor: 'red',
-        zIndex: 999999
     },
     button: {
         alignItems: 'center',

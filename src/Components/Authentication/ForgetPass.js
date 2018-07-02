@@ -56,9 +56,10 @@ class ForgetPass extends Component {
     }
     }
     render() {
-        const { container, texttitle, textBack, textlogin, inputstyle, btnSignIn, logo1, btnlocation } = styles;
+        const {index, container, texttitle, textBack, textlogin, inputstyle, btnSignIn, logo1, btnlocation } = styles;
         return (
             <Container>
+                <View style={index} >
                 <Image source={backgr} style={container} />
                 <View style={texttitle} >
                     <TouchableOpacity onPress={ () => this.onBack() } >
@@ -82,15 +83,18 @@ class ForgetPass extends Component {
                         <Text style={{ textAlign: 'center', color: '#fff' }} >XÁC NHÂN</Text>
                     </TouchableOpacity>
                 </View>
+                </View>
             </Container>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    index: {
+        height: height
+    },
     container: {
         position: 'absolute',
-        width : width
     },
     texttitle: {
         flexDirection: 'row',

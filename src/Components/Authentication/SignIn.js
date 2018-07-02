@@ -68,10 +68,11 @@ class SignIn extends Component {
         }
     }
     render() {
-        const { container, SectionStyle, texttitle, textBack, textlogin,
+        const {index, container, SectionStyle, texttitle, textBack, textlogin,
             inputstyle, btnSignIn, textfina, logo1, ImageStyle, orther } = styles;
         return (
-            <Container>
+            <Container >
+            <View style={index}>
                 <Image source={backgr} style={container} />
                 <View style={texttitle} >
                     <TouchableOpacity>
@@ -119,7 +120,7 @@ class SignIn extends Component {
                         <Text style={textfina} >Đăng kí</Text>
                         </TouchableOpacity>
                     </View>
-                    
+                </View>
                 </View>
             </Container>
         );
@@ -127,6 +128,9 @@ class SignIn extends Component {
 }
 
 const styles = StyleSheet.create({
+    index: {
+        height: height
+    },
     container: {
         position: 'absolute',
         width: width

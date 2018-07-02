@@ -28,7 +28,8 @@ class EditPerson extends Component {
                 lantitude: '',
                 longtitude : '',
                 pass: '',
-                avatarSource : ''
+                avatarSource : '',
+                imageuser :''
         }
     }
 
@@ -42,7 +43,7 @@ class EditPerson extends Component {
                     Alert.alert('Bạn cần phải đăng nhập!');
                 }else {
                     var row = results.rows.item(0);
-                    this.setState({ nameacount : row.name , lantitude : row.locationlan, longtitude : row.locationlong, pass: row.pass})
+                    this.setState({ nameacount : row.name , lantitude : row.locationlan, longtitude : row.locationlong, pass: row.pass, imageuser : row.image}, () => console.log("image user "+ AttachmentActor.getMediaPath(this.state.imageuser)))
                 }
             })
         })
@@ -88,7 +89,7 @@ class EditPerson extends Component {
     render() {
         const {container, imgInfo,nameAndAvatarView, avatarImgInfo,avatarView,editView,editIcon, myInfo,nameInfo,nameText
           ,itemEdit, editText,button,editButtonView,editButtonText} = style;
-          const { nameacount, lantitude, longtitude, pass, avatarSource } = this.state;
+          const { nameacount, lantitude, longtitude, pass, avatarSource, imageuser } = this.state;
         return (
             <Container>
                 <ScrollView style={ container} >
@@ -96,7 +97,7 @@ class EditPerson extends Component {
                    <View style ={nameAndAvatarView}>
                       <View style ={imgInfo}>
                           <View style= {avatarView}>
-                          <Image source= {{uri : AttachmentActor.getMediaPath(avatarSource) ? AttachmentActor.getMediaPath(avatarSource) : avatar}} style={avatarImgInfo}/>
+                          <Image source= {{uri : avatarSource ? AttachmentActor.getMediaPath(avatarSource) : AttachmentActor.getMediaPath(imageuser)}} style={avatarImgInfo}/>
                           </View> 
                           <TouchableOpacity style={editView}
                           onPress={() => this.getImagePicker()}
