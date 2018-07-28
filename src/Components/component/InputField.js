@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Dimensions, TextInput, Text } from 'react-native';
 import propTypes from 'prop-types';
 import IconButton from './IconButton';
+
 export default class InputField extends Component {
+
     onFocus() {
         this.textInput.focus();
     }
@@ -12,7 +14,7 @@ export default class InputField extends Component {
         return (
             <View style={[styles.container, viewStyle]}>
                 {
-                    renderIcon && 
+                    renderIcon &&
                     <IconButton
                         name={iconName}
                         size={iconSize}
@@ -22,7 +24,7 @@ export default class InputField extends Component {
                 <TextInput
                     ref={input => { this.textInput = input }}
                     keyboardType={keyboardType}
-                    style={[styles.input, {width: renderIcon ? width - 50 : width}, inputStyle]}
+                    style={[styles.input, { width: renderIcon ? width - 50 : width }, inputStyle]}
                     placeholder={placeholder}
                     onFocus={onFocus}
                     onBlur={onBlur}

@@ -3,13 +3,14 @@ package com.navigaa;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.airbnb.android.react.maps.MapsPackage;
+import com.wenkesj.voice.VoicePackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.reactnativenavigation.NavigationReactPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.github.wumke.RNImmediatePhoneCall.RNImmediatePhoneCallPackage;
 import com.babisoft.ReactNativeLocalization.ReactNativeLocalizationPackage;
-import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -30,13 +31,14 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new MapsPackage(),
+            new VoicePackage(),
             new RNFetchBlobPackage(),
             new NavigationReactPackage(),
             new ImagePickerPackage(),
             new VectorIconsPackage(),
             new RNImmediatePhoneCallPackage(),
-            new ReactNativeLocalizationPackage(),
-            new MapsPackage()
+            new ReactNativeLocalizationPackage()
       );
     }
 

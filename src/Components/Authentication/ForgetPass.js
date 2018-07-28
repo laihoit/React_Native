@@ -42,7 +42,7 @@ class ForgetPass extends Component {
             this.props.actions.addNotification('Name not null');
         }else{
         DB.db().transaction((tx) =>{
-            var sql = 'SELECT * FROM Laiuser WHERE name=\'' + namecheck + '\'';
+            var sql = 'SELECT * FROM Lai WHERE name=\'' + namecheck + '\'';
             tx.executeSql(sql,[], (tx , results) => {
                 var len = results.rows.length;
                 if(len == 0){

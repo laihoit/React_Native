@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, TextInput, Dimensions, TouchableOpacity,} from 'react-native';
+import { View, Text, Image, StyleSheet, TextInput, Dimensions, TouchableOpacity,Alert} from 'react-native';
 
 import backgr from "../../picture/sky.jpg";
 import logo from "../../picture/logo.png";
@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as NotificationActions from '../notifications/action';
 import { Container } from '../component';
+import { firebaseApp } from '../firebase/Firebaseconfig';
 
 const { width, height } = Dimensions.get('window');
 class SignUp extends Component {
@@ -43,6 +44,28 @@ class SignUp extends Component {
         });
     }  
 
+    SignUpServer(){
+        const { nameup, passup} = this.state;
+        if(nameup == ''){
+            this.props.actions.addNotification('Name not null');
+        }else if(passup == ''){
+            this.props.actions.addNotification('Pass not null');
+        }else{
+        firebaseApp.auth().createUserWithEmailAndPassword(nameup, passup)
+        .then(() => {
+            this.props.navigator.push({
+                screen :'SignIn',
+                navigatorStyle:{
+                    navBarHidden: true
+                }
+            })
+            Alert.alert('Đăng kí thành công');
+        })
+        .catch((error) => {
+
+        })
+        }
+    }
     onSignUp(){
         const { nameup, passup, latitude ,longitude, image} = this.state;
         if(nameup == ''){
@@ -100,7 +123,7 @@ class SignUp extends Component {
                         editable={false}
                     />
                     
-                    <TouchableOpacity style={btnSignIn} onPress={ () => this.onSignUp() }>
+                    <TouchableOpacity style={btnSignIn} onPress={ () => this.SignUpServer() }>
                         <Text style={{ textAlign: 'center', color: '#fff' }} >ĐĂNG KÝ</Text>
                     </TouchableOpacity>
                 </View>

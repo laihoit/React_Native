@@ -11,6 +11,7 @@ import edit from '../../picture/edit.png';
 import sex from '../../picture/sex.png';
 import phone from '../../picture/phone.png';
 import { connect } from 'react-redux';
+import { firebaseApp } from '../firebase/Firebaseconfig';
 
 const { width, height } = Dimensions.get('window');
 
@@ -39,7 +40,16 @@ class Person extends Component {
             })
         })
     }
-
+    SignOutServer(){
+        firebaseApp.auth().signOut();
+        store.dispatch(setLoginState({ isLoggedIn : false, user : '' }))
+        this.props.navigator.push({
+            screen : 'SignIn',
+            navigatorStyle: {
+                navBarHidden: true
+            }
+        })
+    }
     onSignout(){
         store.dispatch(setLoginState({ isLoggedIn : false, user : '' }))
         this.props.navigator.push({
@@ -102,7 +112,7 @@ class Person extends Component {
                         <Text style={itemText}>dinhthetan.tk@gmail.com</Text> */}
                         
                     </View>
-                    <TouchableOpacity onPress={() =>this.onSignout()}   >
+                    <TouchableOpacity onPress={() =>this.SignOutServer()}   >
                             <Text style={itemText} >
                                 Đăng xuất
                             </Text>

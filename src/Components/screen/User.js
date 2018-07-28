@@ -35,7 +35,7 @@ class User extends Component {
 
     componentDidMount() {
         DB.db().transaction(((tx) => {
-            var sql = 'SELECT * FROM Person';
+            var sql = 'SELECT * FROM Lai';
             tx.executeSql(sql, [], (tx, results) => {
                 var len = results.rows.length
                 for (let i = 0; i < len; i++) {

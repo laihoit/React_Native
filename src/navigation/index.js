@@ -12,6 +12,7 @@ import ForgetPass from '../Components/Authentication/ForgetPass';
 import UpdatePass from '../Components/Authentication/UpdatePass';
 import Person from '../Components/Cart/Person';
 import EditPerson from '../Components/Cart/EditPerson';
+import PostSale from '../Components/product/PostSale';
 
 export function registerScreens(store, Provider){
 
@@ -27,5 +28,6 @@ export function registerScreens(store, Provider){
     Navigation.registerComponent('UpdatePass', ()=> UpdatePass, store, Provider);
     Navigation.registerComponent('Person', ()=> Person, store, Provider);
     Navigation.registerComponent('EditPerson', ()=> EditPerson, store, Provider);
+    Navigation.registerComponent('PostSale', () => PostSale, store, Provider);
 
 }

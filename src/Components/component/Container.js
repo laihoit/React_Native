@@ -7,7 +7,9 @@ import { bindActionCreators } from 'redux';
 
 StatusBar.setHidden(true)
 const { height } = Dimensions.get('window');
+
 class Container extends Component{
+
     onLayout(e){
         const { width, height } = e.nativeEvent.layout;
         if(width === 0 || height === 0){ return }

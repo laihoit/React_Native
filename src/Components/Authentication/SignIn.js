@@ -7,6 +7,7 @@ import store from '../modules/redux/store';
 import { bindActionCreators } from 'redux';
 import * as NotificationActions from '../notifications/action';
 import { Container } from '../component/index';
+import { firebaseApp } from '../firebase/Firebaseconfig';
 
 import backgr from "../../picture/sky.jpg";
 import logo from "../../picture/logo.png";
@@ -35,6 +36,28 @@ class SignIn extends Component {
             screen: 'ForgetPass',
             animated: true
         })
+    }
+    SingInServer(){
+        const { name, pass } = this.state;
+        if (name == ''){
+            this.props.actions.addNotification('Name not null');
+        }else if(pass == ''){
+            this.props.actions.addNotification('Pass not null');
+        }else{
+            firebaseApp.auth().signInWithEmailAndPassword(name, pass)
+            .then((results) => {
+                store.dispatch(setLoginState({ isLoggedIn : true, user : name }))
+                    this.props.navigator.push({
+                        screen: 'Home',
+                        title: 'Albums',
+                        })
+
+                    Alert.alert('Đăng nhập thành công' );
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+        }
     }
     onSubmit(){
         const { name, pass } = this.state;
@@ -106,7 +129,7 @@ class SignIn extends Component {
                         />
                     </View>
                     <TouchableOpacity style={btnSignIn}
-                        onPress={() => this.onSubmit()}
+                        onPress={() => this.SingInServer()}
                     >
                         <Text style={{ textAlign: 'center', color: '#fff' }} >ĐĂNG NHẬP</Text>
                     </TouchableOpacity>
