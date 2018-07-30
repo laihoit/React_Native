@@ -10,8 +10,24 @@ import { bindActionCreators } from 'redux';
 import * as NotificationActions from '../notifications/action';
 import { Container } from '../component';
 import { firebaseApp } from '../firebase/Firebaseconfig';
+import Helper from '../Authentication/helper';
+import * as firebase from 'firebase';
+import ImagePicker from 'react-native-image-picker';
+import * as AttachmentActor from '../attachment/action';
 
 const { width, height } = Dimensions.get('window');
+
+var options = {
+    title: 'Select Avatar',
+    customButtons: [
+        { name: 'fb', title: 'Choose Photo from Facebook' },
+    ],
+    storageOptions: {
+        skipBackup: true,
+        path: '/Attachments/Application/'
+    }
+};
+
 class SignUp extends Component {
     constructor(props) {
         super(props)
@@ -20,7 +36,10 @@ class SignUp extends Component {
             passup: '',
             latitude: '',
             longitude: '',
-            image: ''
+            image: '',
+            uid: '',
+            avatarSource: '',
+            imageuser: ''
         }
     }
     static navigatorStyle = {
@@ -37,22 +56,55 @@ class SignUp extends Component {
         }, (error) => console.log(error),
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 })
     }
- 
     onBack(){
         this.props.navigator.pop({
             animated: true
         });
     }  
 
+    getImagePicker() {
+        ImagePicker.showImagePicker(options, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            }
+            else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            }
+            else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            }
+            else {
+             console.log('abc ' + response.uri );
+                AttachmentActor.saveImage(response.uri)
+                    .then(response => {
+                        this.setState({
+                            avatarSource: response
+                        });
+                    })
+                    .catch(error => console.log(error))
+
+            }
+        });
+
+    }
+
     SignUpServer(){
-        const { nameup, passup} = this.state;
+        const { nameup, passup, latitude ,longitude, avatarSource } = this.state;
         if(nameup == ''){
             this.props.actions.addNotification('Name not null');
         }else if(passup == ''){
             this.props.actions.addNotification('Pass not null');
         }else{
+            firebaseApp.database().ref('User').push({
+                Username : nameup,
+                Password : passup,
+                latitude : latitude,
+                longitude : longitude,
+               // Image : avatarSource
+            })
         firebaseApp.auth().createUserWithEmailAndPassword(nameup, passup)
         .then(() => {
+            
             this.props.navigator.push({
                 screen :'SignIn',
                 navigatorStyle:{
@@ -87,6 +139,7 @@ class SignUp extends Component {
 }
     render() {
         const {index, container, texttitle, textBack, textlogin, inputstyle, btnSignIn, logo1, btnlocation } = styles;
+        const { avatarSource , imageuser} = this.state;
         return (
             <Container>
                 <View style={index} >
@@ -97,8 +150,13 @@ class SignUp extends Component {
                     </TouchableOpacity>
                     <Text style={textlogin}>Đăng ký</Text>
                 </View>
-                <View style={logo1}>
+                <TouchableOpacity style={logo1}
+                    onPress={() => this.getImagePicker()}
+                >
                     <Image source={logo} />
+                </TouchableOpacity>
+                <View style={logo1} >
+                <Image source={{ uri: avatarSource ? AttachmentActor.getMediaPath(avatarSource) : AttachmentActor.getMediaPath(imageuser) }}  />
                 </View>
                 <View >
                     <TextInput style={inputstyle}

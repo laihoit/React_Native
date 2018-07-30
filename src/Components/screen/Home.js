@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Linking, Alert } from 'react-native';
+import { firebaseApp } from '../firebase/Firebaseconfig';
 
 let rootNavigator = null;
 
@@ -9,9 +10,10 @@ export function getRootNavigator(){
 class Home extends Component {
     constructor(props){
         super(props);
-
+        items=[]
         this.state = {
             albums: [],
+
         }; 
         rootNavigator = this.props.navigator;
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
@@ -52,12 +54,23 @@ class Home extends Component {
 
    
     componentDidMount(){
-        fetch('https://rallycoding.herokuapp.com/api/music_albums')
-        .then(response => response.json())
-        .then(responseJson => {
-            this.setState({ albums : responseJson })
+        // fetch('https://rallycoding.herokuapp.com/api/music_albums')
+        // .then(response => response.json())
+        // .then(responseJson => {
+        //     this.setState({ albums : responseJson })
+        // })
+        // .catch(err => console.log(err));
+        firebaseApp.database().ref('PostSale').on('value', (snap) => {
+            snap.forEach((data) => {
+                items.push({
+                    key: data.key,
+                    data: data.val()
+                })
+            })
+            this.setState({
+                albums : items
+            })
         })
-        .catch(err => console.log(err));
     }
     render() {
         const { container, item_header, imageStyle, titleStyle,
@@ -73,23 +86,23 @@ class Home extends Component {
                             <View>
                             <Image
                                 style={imageStyle} 
-                                source={{ uri: item.thumbnail_image }}
+                                source={{ uri: item.data.Image }}
                             />
                             </View>
                             <View style={titleStyle} >
-                                <Text>{item.title}</Text>
-                                <Text>{item.artist}</Text>
+                                <Text>{item.data.NameCar}</Text>
+                                <Text>{item.data.Money}</Text>
                             </View>
                         </View>
                         <View>
                             <View style={view_Main} >
                                 <Image
                                 style={image_main}
-                                    source={{ uri : item.image}}
+                                    source={{ uri : item.data.Image}}
                                 />
                             </View>
                             <View style={view_Touch} >
-                                <TouchableOpacity onPress = {() => Linking.openURL(item.url)} >
+                                <TouchableOpacity onPress = {() => Linking.openURL(item.data.Image)} >
                                     <Text style={text_touch} >Buy now!</Text>
                                 </TouchableOpacity>
                             </View>

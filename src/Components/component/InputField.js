@@ -10,7 +10,7 @@ export default class InputField extends Component {
     }
     render() {
         const { iconName, iconSize, iconColor, keyboardType, placeholder, onFocus, onBlur, onSubmitEditing, secureTextEntry,
-            onChangeText, value, returnKeyType, autoCorrect, autoFocus, autoCapitalize, renderIcon, inputStyle, viewStyle, editable } = this.props;
+            onChangeText, value, returnKeyType, autoCorrect, autoFocus, autoCapitalize, renderIcon, inputStyle, viewStyle, editable, placeholderTextColor } = this.props;
         return (
             <View style={[styles.container, viewStyle]}>
                 {
@@ -38,6 +38,7 @@ export default class InputField extends Component {
                     autoCapitalize={autoCapitalize}
                     secureTextEntry={secureTextEntry}
                     editable={editable}
+                    placeholderTextColor={placeholderTextColor}
                 />
             </View>
         )
@@ -60,7 +61,8 @@ InputField.defaultProps = {
     secureTextEntry: false,
     inputStyle: {},
     viewStyle: {},
-    editable: true
+    editable: true,
+    placeholderTextColor:"#000"
 }
 
 InputField.propTypes = {
@@ -82,7 +84,8 @@ InputField.propTypes = {
     renderIcon: propTypes.bool,
     secureTextEntry: propTypes.bool,
     returnKeyType: propTypes.oneOf(['done', 'go', 'next', 'search', 'send']),
-    editable: propTypes.bool
+    editable: propTypes.bool,
+    placeholderTextColor : propTypes.string
 }
 const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({

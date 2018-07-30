@@ -13,6 +13,8 @@ import UpdatePass from '../Components/Authentication/UpdatePass';
 import Person from '../Components/Cart/Person';
 import EditPerson from '../Components/Cart/EditPerson';
 import PostSale from '../Components/product/PostSale';
+import PostSa from '../Components/post/PostSale';
+import PostRent from '../Components/post/PostRent';
 
 export function registerScreens(store, Provider){
 
@@ -29,5 +31,7 @@ export function registerScreens(store, Provider){
     Navigation.registerComponent('Person', ()=> Person, store, Provider);
     Navigation.registerComponent('EditPerson', ()=> EditPerson, store, Provider);
     Navigation.registerComponent('PostSale', () => PostSale, store, Provider);
+    Navigation.registerComponent('PostSa', ()=> PostSa, store, Provider);
+    Navigation.registerComponent('PostRent', ()=> PostRent, store, Provider);
 
 }

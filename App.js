@@ -24,7 +24,7 @@ class AppContainer {
     }else {
       Navigation.startSingleScreenApp({
         screen:{
-          screen : 'SignIn',
+          screen : 'PostSa',
           title:'SignIn',
           navigatorStyle:{
             navBarHidden: true

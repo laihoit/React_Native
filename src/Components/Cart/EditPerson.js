@@ -79,7 +79,6 @@ class EditPerson extends Component {
                         this.setState({
                             avatarSource: response
                         });
-
                     })
                     .catch(error => console.log(error))
 
