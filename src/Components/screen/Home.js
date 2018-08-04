@@ -1,19 +1,30 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Linking, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Linking, Alert, TextInput } from 'react-native';
 import { firebaseApp } from '../firebase/Firebaseconfig';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import redlike from '../../picture/redlike.png';
+import like from '../../picture/like.png';
+import sex from '../../picture/sex.png';
+import base from 're-base';
 
 let rootNavigator = null;
 
 export function getRootNavigator(){
     return rootNavigator;
 }
+const { width, height } = Dimensions.get('window');
+
 class Home extends Component {
     constructor(props){
         super(props);
         items=[]
         this.state = {
             albums: [],
-
+            searchText : '',
+            rawData: [],
+            itemlike: false
         }; 
         rootNavigator = this.props.navigator;
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
@@ -54,12 +65,6 @@ class Home extends Component {
 
    
     componentDidMount(){
-        // fetch('https://rallycoding.herokuapp.com/api/music_albums')
-        // .then(response => response.json())
-        // .then(responseJson => {
-        //     this.setState({ albums : responseJson })
-        // })
-        // .catch(err => console.log(err));
         firebaseApp.database().ref('PostSale').on('value', (snap) => {
             snap.forEach((data) => {
                 items.push({
@@ -72,12 +77,69 @@ class Home extends Component {
             })
         })
     }
+    onDetail(item){
+        this.props.navigator.push({
+            screen: 'DetailUser',
+            title: 'Detail',
+            animated: true,
+            passProps:{
+                myacount : item.data.NameCar,
+                myimage: item.data.Image,
+                myemail: item.data.Hangxe,
+                mylocal: item.data.Money,
+                mydate: item.data.NumberKm,
+                myphone: item.data.Tinhtrang ,
+                myname: item.data.Mauxe,
+                mystate: item.data.NamSx,
+                mysex : item.data.Biensoxe
+            }
+        })
+    }
+
+    onLocate(item){
+        this.props.navigator.push({
+            screen : 'MyMap',
+            title: 'Mapuser',
+            passProps: {
+                name : item.data.User,
+                locationlan : item.data.Latitude,
+                locationlong : item.data.Longitude
+            }
+        })
+
+    }
+    RedLike(item){
+        firebaseApp.database().ref('/PostSale/' + item.key).update({ Care : true })
+        firebaseApp.database().ref('/PostSale/' + item.key).update({ UserCare : this.props.mystate })
+    }
+
+    searchTexta(){
+        const search = this.state.searchText;
+        firebaseApp.database().ref('PostSale').on('value', (e) => {
+            var row = [];
+            e.val().NameCar
+        })
+    }
+
     render() {
         const { container, item_header, imageStyle, titleStyle,
-             item_style, image_main, view_Main, view_Touch, text_touch } = styles;
+             item_style, image_main, view_Main, view_Touch, text_touch, SectionStyle, ImageStyle, inputstyle, imageStylelike } = styles;
+             const { itemlike } = this.state;
         return (
             <View style={container} >
-          
+                <View style={SectionStyle} >
+                        <TextInput style={inputstyle}
+                            placeholder="Tìm kiếm sản phẩm"
+                            onChangeText={(searchText) => { this.setState({ searchText }) }}
+                            value={this.state.searchText}
+                            underlineColorAndroid="transparent"
+                            placeholderTextColor="#fff"
+                        />
+                        <TouchableOpacity onPress={() => this.searchTexta()}  >
+                        <Image source={sex} style={ImageStyle} />
+                        </TouchableOpacity>
+                    </View>
+                    
                 <FlatList
                 data = { this.state.albums}
                 renderItem= {({item}) => (
@@ -89,6 +151,17 @@ class Home extends Component {
                                 source={{ uri: item.data.Image }}
                             />
                             </View>
+                        <TouchableOpacity onPress={this.RedLike.bind(this, item) }>
+                        {  itemlike ? 
+                                <Image
+                                style={imageStylelike}
+                                source={redlike}/>  :
+                                <Image
+                                style={imageStylelike}
+                                source={like}
+                                />}
+
+                            </TouchableOpacity>
                             <View style={titleStyle} >
                                 <Text>{item.data.NameCar}</Text>
                                 <Text>{item.data.Money}</Text>
@@ -102,8 +175,11 @@ class Home extends Component {
                                 />
                             </View>
                             <View style={view_Touch} >
-                                <TouchableOpacity onPress = {() => Linking.openURL(item.data.Image)} >
-                                    <Text style={text_touch} >Buy now!</Text>
+                                <TouchableOpacity onPress = {this.onDetail.bind(this, item)} >
+                                    <Text style={text_touch} >Chi tiet</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress = {this.onLocate.bind(this, item)} >
+                                    <Text style={text_touch} >Dinh vi</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -116,8 +192,6 @@ class Home extends Component {
         );
     }
 }
-
-export default Home;
 
 const styles = StyleSheet.create({
     container: { 
@@ -139,12 +213,18 @@ const styles = StyleSheet.create({
     },
     item_header:{
         flexDirection : 'row',
-        marginTop: 20
+        marginTop: 10,
     },
     imageStyle:{
         width: 50,
         height: 50,
         marginLeft: 20
+    },
+    imageStylelike:{
+        width: 25,
+        height: 25,
+        position : 'absolute',
+        right: -width/1.5,
     },
     titleStyle:{
         justifyContent: 'space-around',
@@ -152,7 +232,7 @@ const styles = StyleSheet.create({
     },
     image_main:{
         width:300,
-        height: 300,
+        height: 200,
     },
     view_Main:{
         justifyContent:'center',
@@ -163,13 +243,39 @@ const styles = StyleSheet.create({
     view_Touch:{
         alignSelf: 'stretch',
         backgroundColor: '#fff',
+        flexDirection : 'row'
     },
     text_touch: {
-        alignSelf: 'center',
         color: '#007aff',
         fontSize: 16,
         fontWeight: '600',
-        paddingTop: 10,
-        paddingBottom: 10
-    }
+        paddingBottom: 10,
+        width : width /2,
+        textAlign : 'center'
+    },
+    SectionStyle: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        borderWidth: .1,
+        alignItems: 'center',
+        backgroundColor: 'rgba(216, 216, 216, 0.5)',
+    },
+    ImageStyle: {
+        padding: 10,
+        height: 25,
+        width: 25,
+        resizeMode: 'stretch',
+        marginRight: 25
+    },
+    inputstyle: {
+        flex: 1,
+        height: 50,
+        marginLeft : 20
+    },
 });
+
+const mapStateToProps = (state) =>({
+    mystate : state.checkLogin.user
+})
+
+export default connect(mapStateToProps)(Home);

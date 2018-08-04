@@ -30,34 +30,33 @@ var options = {
     }
 };
 
-const uploadImage = (uri, currentImage) => {
+const uploadImage = (uri, mime = 'application/octet-stream') => {
     return new Promise((resolve, reject) => {
-        //const uploadUri = Platform.OS === 'ios' ? uri.replace('file://','') : uri;
-        const uploadUri = currentImage.uri;
-        const sessionId = new Date().getTime();
-        let uploadBlob = null;
-        const imageRef = storage.ref('images').child(`${sessionId}.jpg`);
-
+      const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
+        const sessionId = new Date().getTime()
+        let uploadBlob = null
+        const imageRef = storage.ref('images').child(`${sessionId}`)
+  
         fs.readFile(uploadUri, 'base64')
         .then((data) => {
-            return Blob.build(data, {type : `${mime};BASE64`})
+          return Blob.build(data, { type: `${mime};BASE64` })
         })
         .then((blob) => {
-            uploadBlob = blob
-            return imageRef.put(blob, { contentType : mime})
+          uploadBlob = blob
+          return imageRef.put(blob, { contentType: mime })
         })
         .then(() => {
-            uploadBlob.close()
-            return imageRef.getDownloadURL()
+          uploadBlob.close()
+          return imageRef.getDownloadURL()
         })
         .then((url) => {
-            resolve(url)
+          resolve(url)
         })
         .catch((error) => {
-            reject(error)
+          reject(error)
         })
     })
-}
+  }
 
 class PostSell extends Component {
     constructor(props) {
@@ -77,7 +76,8 @@ class PostSell extends Component {
             namSx: '',
             biensoxe: '',
             latitude: '',
-            longitude: ''
+            longitude: '',
+            care: false
         }
     }
     getImagePicker() {
@@ -106,7 +106,9 @@ class PostSell extends Component {
     }
 
     submitPostSale() {
-        const { avatarSource, avatarimage, nameCar, loaixe, hangxe, money, numberKm, tinhtrang, mauxe, namSx, biensoxe, latitude, longitude } = this.state;
+        const { avatarSource, avatarimage, nameCar, loaixe, hangxe, money, numberKm, tinhtrang, mauxe, namSx, biensoxe, latitude, longitude, care } = this.state;
+        var month= new Date().getMonth()+1;
+        var date = new Date().getDate() +"/"+ month +"/" + new Date().getFullYear();
         if ( avatarimage === "" || nameCar === "" || loaixe === "" || hangxe === "" || money === "" || numberKm === "" ||
             tinhtrang === "" || mauxe === "" || namSx === "" || biensoxe === "" || latitude === "" || longitude === "") {
             this.props.actions.addNotification('Please not null');
@@ -123,7 +125,11 @@ class PostSell extends Component {
                 NamSx: namSx,
                 Biensoxe: biensoxe,
                 Latitude: latitude,
-                Longitude: longitude
+                Longitude: longitude,
+                User : this.props.mystate,
+                Date : date,
+                Care : care,
+                UserCare : ''
             })
             this.props.navigator.push({
                 screen :'Home',
@@ -323,7 +329,10 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
 });
-export default connect(null, (dispatch) => {
+const mapStateToProps = (state) =>({
+    mystate : state.checkLogin.user
+})
+export default connect(mapStateToProps, (dispatch) => {
     return {
         actions: bindActionCreators(Object.assign({}, NotificationActions), dispatch)
     };

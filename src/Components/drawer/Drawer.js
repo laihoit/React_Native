@@ -24,11 +24,32 @@ class Drawer extends Component {
             title: 'MyMap',
           });
       };
-      onShowUser = () => {
+      onPostsale = () => {
         this.props.navigator.toggleDrawer({ side: 'left', to: 'closed' });
         getRootNavigator().push({
-            screen: 'User',
-            title: 'User',
+            screen: 'PostSa',
+            title: 'Ban xe',
+          });
+      };
+      onPostRent = () => {
+        this.props.navigator.toggleDrawer({ side: 'left', to: 'closed' });
+        getRootNavigator().push({
+            screen: 'PostRent',
+            title: 'Thue xe',
+          });
+      };
+      onCurrentSale = () => {
+        this.props.navigator.toggleDrawer({ side: 'left', to: 'closed' });
+        getRootNavigator().push({
+            screen: 'CurrentSale',
+            title: 'Ban xe hom nay',
+          });
+      };
+      onCurrentRent = () => {
+        this.props.navigator.toggleDrawer({ side: 'left', to: 'closed' });
+        getRootNavigator().push({
+            screen: 'CurrentRent',
+            title: 'Thue xe hom nay',
           });
       };
 
@@ -42,6 +63,14 @@ class Drawer extends Component {
           />
           <View style={Viewhr} />
       </View>
+      <View style={button}>
+        <Image 
+          source={ require('../../picture/map.png')}
+        />
+          <Button
+            onPress={this.onShowMymap}
+            title="Mymap"/>
+        </View>
         <View style={button}>
         <Image 
           source={ require('../../picture/house.png')}
@@ -60,11 +89,12 @@ class Drawer extends Component {
         </View>
         <View style={button}>
         <Image 
-          source={ require('../../picture/map.png')}
+        style={imageStyle}
+          source={ require('../../picture/person.png')}
         />
           <Button
-            onPress={this.onShowMymap}
-            title="Mymap"/>
+            onPress={this.onPostsale}
+            title="Dang tin ban xe"/>
         </View>
         <View style={button}>
         <Image 
@@ -72,8 +102,26 @@ class Drawer extends Component {
           source={ require('../../picture/person.png')}
         />
           <Button
-            onPress={this.onShowUser}
-            title="User"/>
+            onPress={this.onPostRent}
+            title="Dang tin thue xe"/>
+        </View>
+        <View style={button}>
+        <Image 
+        style={imageStyle}
+          source={ require('../../picture/person.png')}
+        />
+          <Button
+            onPress={this.onCurrentSale}
+            title="Bán xe ngày hôm nay"/>
+        </View>
+        <View style={button}>
+        <Image 
+        style={imageStyle}
+          source={ require('../../picture/person.png')}
+        />
+          <Button
+            onPress={this.onCurrentRent}
+            title="Thuê xe ngày hôm nay"/>
         </View>
       </ScrollView>
     );

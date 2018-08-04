@@ -26,20 +26,21 @@ class Person extends Component {
         }
     }
 
-    componentDidMount(){
-        DB.db().transaction((tx) => {
-            var sql = 'SELECT * FROM Lai WHERE name=\'' + this.props.mystate + '\'';
-            tx.executeSql(sql, [], (tx, results) => {
-                var len = results.rows.lenght;
-                if(len == 0 && this.props.username == ''){
-                    Alert.alert('Bạn cần phải đăng nhập!');
-                }else {
-                    var row = results.rows.item(0);
-                    this.setState({ nameacount : row.name , lantitude : row.locationlan, longtitude : row.locationlong , imageuser : row.image})
-                }
+     componentWillMount(){
+         let that = this;
+        var ref = firebaseApp.database().ref('User');
+        var query = ref.orderByChild('Username').equalTo(this.props.mystate);
+        query.once('value', function(snapshot){
+            snapshot.forEach(function(child){
+                 that.setState({
+                    nameacount: child.val().Username,
+                    lantitude : child.val().latitude,
+                    longtitude : child.val().longitude
+                 })
+
             })
         })
-    }
+     }
     SignOutServer(){
         firebaseApp.auth().signOut();
         store.dispatch(setLoginState({ isLoggedIn : false, user : '' }))
@@ -58,7 +59,6 @@ class Person extends Component {
                 navBarHidden: true
             }
         })
-      //  store.dispatch(resetPersisStore());
     }
     onEditPerson(){
         this.props.navigator.push({
@@ -66,11 +66,36 @@ class Person extends Component {
             title: 'EditPerson'
         })
     }
+    onHistoryPostSale(){
+        this.props.navigator.push({
+            screen: 'HistoryPostSale',
+            title: 'HistoryPostSale'
+        })
+    }
+    onHistoryPostRent(){
+        this.props.navigator.push({
+            screen: 'HistoryPostRent',
+            title: 'HistoryPostRent'
+        })
+    }
+
+    onCareSale(){
+        this.props.navigator.push({
+            screen: 'CareSale',
+            title: 'CareSale'
+        })
+    }
+
+    onCareRent(){
+        this.props.navigator.push({
+            screen: 'CareRent',
+            title: 'CareRent'
+        })
+    }
 
     render() {
         const {imgInfo, avatarImgInfo,avatarView, myInfo,nameInfo,userNameInfo,
           linkUserNameInfo,imgEdit,editIcon, hr, itemInfo, itemImg, itemIcon,itemText} = style;
-        //    if(this.props.mystate.user != ''){
             const { imageuser } = this.state;
         return (  
             <Container>
@@ -80,7 +105,7 @@ class Person extends Component {
                             <Image source = {edit} style={editIcon}/>
                           </TouchableOpacity>
                           <View style= {avatarView}>
-                          <Image source= {{uri : Attachmentactor.getMediaPath(imageuser) ? Attachmentactor.getMediaPath(imageuser) : avatar}} style={avatarImgInfo}/>
+                          <Image source={imageuser ? imageuser : avatar} style={avatarImgInfo}/>
                           </View> 
                     </View>
 
@@ -95,22 +120,50 @@ class Person extends Component {
                         <View style={itemImg}>
                         <Image source={sex} style={itemIcon}/>
                         </View>
-                        <Text style={itemText}>{this.state.lantitude}</Text>
+                        <TouchableOpacity onPress={() => this.onHistoryPostSale() }
+                        style={itemText}>
+                        <Text>
+                        Lich su dang tin mua xe
+                        </Text></TouchableOpacity>
+                    </View>
+                    <View style={itemInfo}>
+                        <View style={itemImg}>
+                        <Image source={sex} style={itemIcon}/>
+                        </View>
+                        <TouchableOpacity onPress={() => this.onHistoryPostRent() }
+                        style={itemText}>
+                        <Text>
+                        Lich su dang tin thue xe
+                        </Text></TouchableOpacity>
+                    </View>
+                    <View style={itemInfo}>
+                        <View style={itemImg}>
+                        <Image source={sex} style={itemIcon}/>
+                        </View>
+                        <TouchableOpacity onPress={() => this.onCareSale() }
+                        style={itemText}>
+                        <Text>
+                        Xe ban quan tam
+                        </Text></TouchableOpacity>
+                    </View>
+                    <View style={itemInfo}>
+                        <View style={itemImg}>
+                        <Image source={sex} style={itemIcon}/>
+                        </View>
+                        <TouchableOpacity onPress={() => this.onCareRent() }
+                        style={itemText}>
+                        <Text>
+                        Xe thue quan tam
+                        </Text></TouchableOpacity>
                     </View>
 
                     <View style={itemInfo}>
                         <View style={itemImg}>
                         <Image source={phone} style={itemIcon}/>
                         </View>
-                        <Text style={itemText}>{this.state.longtitude}</Text>
-                    </View>
-
-                 <View style={itemInfo}>
-                        {/* <View style={itemImg}>
-                        <Image source={email} style={itemIcon}/>
-                        </View>
-                        <Text style={itemText}>dinhthetan.tk@gmail.com</Text> */}
-                        
+                        <TouchableOpacity style={itemText}>
+                        <Text>
+                        Bai dang yeu thich</Text> </TouchableOpacity>
                     </View>
                     <TouchableOpacity onPress={() =>this.SignOutServer()}   >
                             <Text style={itemText} >
@@ -120,15 +173,6 @@ class Person extends Component {
                 </View>
             </Container>
         )
-    // }else if(this.props.mystate.user == ''){
-    //     Alert.alert('Bạn cần phải đăng nhập!');
-    //     this.props.navigator.push({
-    //         screen : 'SignIn',
-    //         navigatorStyle:{
-    //             navBarHidden: true
-    //         }
-    //     })
-    // }
      }
 }
 
@@ -201,8 +245,6 @@ const style = StyleSheet.create({
     },
     itemText:{
       alignSelf: 'center',
-      fontSize:15,
-      color:'#222'
     }
 });
 const mapStateToProps = (state) =>({

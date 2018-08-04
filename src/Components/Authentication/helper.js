@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 class Helper {
     static setUserName(userId, name){
         let userNamePath = "/user/"+userId+"/details/name"
-        return firebase.database().ref(userNamePath).push(name)
+        return firebase.database().ref(userNamePath).set(name)
     }
     static setUserPass(userId, pass){
         let userNamePath = "/user/"+userId+"/details/pass"

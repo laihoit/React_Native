@@ -1,56 +1,77 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Linking ,Alert} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Linking, Alert, TextInput } from 'react-native';
 import { firebaseApp } from '../firebase/Firebaseconfig';
+import sex from '../../picture/sex.png';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
+let rootNavigator = null;
+
+export function getRootNavigator(){
+    return rootNavigator;
+}
 const { width, height } = Dimensions.get('window');
 
-class HomeUser extends Component {
-
+class CurrentSale extends Component {
     constructor(props){
         super(props);
         items=[]
         this.state = {
-            data: [],
-        };
+            posted: [],
+            searchText : '',
+            items: []
+        }; 
+        rootNavigator = this.props.navigator;
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
 
     static navigatorButtons = {
+        
         leftButtons: [
+          {
+            icon: require('../../picture/menul.png'),
+            id: 'drawer',
+            fontSize:10
+          }
+        ],
+        rightButtons: [
             {
-                icon: require('../../picture/back.png'),
-                id: 'back',
+                icon: require('../../picture/cart1.png'),
+                id : 'person',
                 fontSize: 10,
             }
-        ]
-    };
-    onNavigatorEvent(e) {
-        if (e.id == 'back') {
-            this.props.navigator.pop();
+        ],
+      };
+      onNavigatorEvent(e){
+            if(e.id == 'drawer'){
+                this.props.navigator.toggleDrawer({
+                    side: 'left',
+                    animated: true
+                  });
+            }else if(e.id == 'person'){
+                this.props.navigator.push({
+                    screen: 'Person',
+                });
+            }
+
         }
-    }
-        
-    _keyExtractor = (item,index) => index.toString();
 
+    _keyExtractor = (item, index) => index.toString();
+
+   
     componentDidMount(){
-
-        // fetch('https://randomuser.me/api?results=20')
-        // .then(response => response.json())
-        // .then(responseJson => {
-        //     this.setState({ data : responseJson.results })
-        // })
-        // .catch(err => console.log(err));
-        firebaseApp.database().ref('PostRent').on('value', (snap) => {
-            snap.forEach((data) => {
+        that = this;
+        var month= new Date().getMonth()+1;
+        var date = new Date().getDate() +"/"+ month +"/" + new Date().getFullYear();
+        var query = firebaseApp.database().ref('PostSale').orderByChild('Date').equalTo(date);
+        query.once('value', function(snapshot){
+            snapshot.forEach(function(child){
                 items.push({
-                    key: data.key,
-                    data: data.val()
+                    key: child.key,
+                    data: child.val()
                 })
             })
-            this.setState({
-                data : items
+            that.setState({
+                posted : items
             })
         })
     }
@@ -88,18 +109,31 @@ class HomeUser extends Component {
 
     render() {
         const { container, item_header, imageStyle, titleStyle,
-             item_style, image_main, view_Main, view_Touch, text_touch } = styles;
+             item_style, image_main, view_Main, view_Touch, text_touch, SectionStyle, ImageStyle, inputstyle } = styles;
         return (
             <View style={container} >
+                <View style={SectionStyle} >
+                        <TextInput style={inputstyle}
+                            placeholder="Tìm kiếm sản phẩm"
+                            onChangeText={(searchText) => { this.setState({ searchText }) }}
+                            value={this.state.searchText}
+                            underlineColorAndroid="transparent"
+                            placeholderTextColor="#fff"
+                        />
+                        <TouchableOpacity onPress={() => this.searchTexta()}  >
+                        <Image source={sex} style={ImageStyle} />
+                        </TouchableOpacity>
+                    </View>
+                    
                 <FlatList
-                data = { this.state.data}
+                data = { this.state.posted}
                 renderItem= {({item}) => (
                     <View style={item_style} >
                         <View style={item_header} >  
                             <View>
                             <Image
                                 style={imageStyle} 
-                                source={{ uri: item.data.Image}}
+                                source={{ uri: item.data.Image }}
                             />
                             </View>
                             <View style={titleStyle} >
@@ -111,7 +145,7 @@ class HomeUser extends Component {
                             <View style={view_Main} >
                                 <Image
                                 style={image_main}
-                                    source={{ uri : item.data.Image }}
+                                    source={{ uri : item.data.Image}}
                                 />
                             </View>
                             <View style={view_Touch} >
@@ -153,7 +187,7 @@ const styles = StyleSheet.create({
     },
     item_header:{
         flexDirection : 'row',
-        marginTop: 20
+        marginTop: 10
     },
     imageStyle:{
         width: 50,
@@ -183,15 +217,32 @@ const styles = StyleSheet.create({
         color: '#007aff',
         fontSize: 16,
         fontWeight: '600',
-        paddingTop: 10,
         paddingBottom: 10,
         width : width /2,
         textAlign : 'center'
-    }
+    },
+    SectionStyle: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        borderWidth: .1,
+        alignItems: 'center',
+        backgroundColor: 'rgba(216, 216, 216, 0.5)',
+    },
+    ImageStyle: {
+        padding: 10,
+        height: 25,
+        width: 25,
+        resizeMode: 'stretch',
+        marginRight: 25
+    },
+    inputstyle: {
+        flex: 1,
+        height: 50,
+        marginLeft : 20
+    },
 });
-
 const mapStateToProps = (state) =>({
     mystate : state.checkLogin.user
 })
 
-export default connect(mapStateToProps)(HomeUser);
+export default connect(mapStateToProps)(CurrentSale);
