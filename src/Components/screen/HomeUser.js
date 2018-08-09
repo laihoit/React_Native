@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Linking ,Alert} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Dimensions, Linking ,Alert, TextInput} from 'react-native';
 import { firebaseApp } from '../firebase/Firebaseconfig';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -13,6 +13,7 @@ class HomeUser extends Component {
         items=[]
         this.state = {
             data: [],
+            value: null
         };
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
     }
@@ -35,13 +36,6 @@ class HomeUser extends Component {
     _keyExtractor = (item,index) => index.toString();
 
     componentDidMount(){
-
-        // fetch('https://randomuser.me/api?results=20')
-        // .then(response => response.json())
-        // .then(responseJson => {
-        //     this.setState({ data : responseJson.results })
-        // })
-        // .catch(err => console.log(err));
         firebaseApp.database().ref('PostRent').on('value', (snap) => {
             snap.forEach((data) => {
                 items.push({
@@ -85,14 +79,40 @@ class HomeUser extends Component {
         })
 
     }
+    searchTexta(searchText) {
+        let search = new RegExp(searchText, 'gi');
+        var row = [];
+        if (search) {
+            for (let i in this.state.data) {
+                if (this.state.data[i].data.NameCar.match(search)) {
+                    row.push(this.state.data[i]);
+                    break;
+                }
+
+            }
+            this.setState({
+                value : row
+            })
+        }
+    }
 
     render() {
         const { container, item_header, imageStyle, titleStyle,
-             item_style, image_main, view_Main, view_Touch, text_touch } = styles;
+             item_style, image_main, view_Main, view_Touch, text_touch, SectionStyle, inputstyle } = styles;
+             const { data, value } = this.state;
         return (
             <View style={container} >
+                           <View style={SectionStyle} >
+                    <TextInput style={inputstyle}
+                        placeholder="Tìm kiếm sản phẩm"
+                        onChangeText={(searchText) => { this.searchTexta(searchText) }}
+                        value={this.state.searchText}
+                        underlineColorAndroid="transparent"
+                        placeholderTextColor="#fff"
+                    />
+                </View>
                 <FlatList
-                data = { this.state.data}
+                data = {value ? value : data}
                 renderItem= {({item}) => (
                     <View style={item_style} >
                         <View style={item_header} >  
@@ -187,7 +207,19 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         width : width /2,
         textAlign : 'center'
-    }
+    },
+    SectionStyle: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        borderWidth: .1,
+        alignItems: 'center',
+        backgroundColor: 'rgba(216, 216, 216, 0.5)',
+    },
+    inputstyle: {
+        flex: 1,
+        height: 50,
+        marginLeft: 20
+    },
 });
 
 const mapStateToProps = (state) =>({

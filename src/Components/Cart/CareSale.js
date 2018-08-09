@@ -111,9 +111,10 @@ class CareSale extends Component {
 
     render() {
         const { container, item_header, imageStyle, titleStyle,
-             item_style, image_main, view_Main, view_Touch, text_touch, SectionStyle, ImageStyle, inputstyle } = styles;
+             item_style, image_main, view_Main, view_Touch, text_touch, SectionStyle, ImageStyle, inputstyle, textempty } = styles;
         return (
-            <View style={container} >
+                (this.state.posted ?
+           ( <View style={container} >
                 <View style={SectionStyle} >
                         <TextInput style={inputstyle}
                             placeholder="Tìm kiếm sản phẩm"
@@ -126,7 +127,6 @@ class CareSale extends Component {
                         <Image source={sex} style={ImageStyle} />
                         </TouchableOpacity>
                     </View>
-                    
                 <FlatList
                 data = { this.state.posted}
                 renderItem= {({item}) => (
@@ -165,6 +165,12 @@ class CareSale extends Component {
                 
                 />
             </View>
+           ) :
+           (
+               <View style={textempty}>
+                   <Text>Bạn chưa quan tâm sản phẩm nào!!!</Text>
+               </View>
+           ))
         );
     }
 }
@@ -242,6 +248,12 @@ const styles = StyleSheet.create({
         height: 50,
         marginLeft : 20
     },
+    textempty:{
+        justifyContent:'center',
+        alignItems:'center',
+        width : width,
+        height : height
+    }
 });
 const mapStateToProps = (state) =>({
     mystate : state.checkLogin.user

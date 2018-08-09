@@ -8,6 +8,10 @@ class Drawer extends Component {
         this.props.navigator.toggleDrawer({
           side: 'left', to: 'closed'
         });
+        getRootNavigator().push({
+          screen: 'Home',
+          title: 'Home',
+        });
       };
     
       onShowHomeUser = () => {
